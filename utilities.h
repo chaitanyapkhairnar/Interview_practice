@@ -10,15 +10,15 @@
  *
  */
 
-#ifndef _utilities.h
-#define _utilities.h
+#ifndef _utilities_h         // To avoid multiple inclusions of this header file
+#define _utilities_h         // Use any name. using _<filename>_h to be unique
 
 /*
  * Linked List node
  */
 typedef struct ll_node {
     int value;
-    ll_node *next;
+    struct ll_node *next;
 }ll_node;
 
 /*
@@ -26,8 +26,8 @@ typedef struct ll_node {
  */
 typedef struct bt_node {
     int value;
-    bt_node *left;
-    bt_node *right;
+    struct bt_node *left;
+    struct bt_node *right;
 }bt_node;
 
 #endif

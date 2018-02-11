@@ -70,6 +70,10 @@ ll_node* ll_insert_node (ll_node *head, int pos, int val) {
         printf("Head node is NULL. Returning.");
         return head;
     }
+    if (pos < 0) {
+        printf("Error. Invalid position to insert new node. Returning.");
+        return head;
+    }
     /* if pos is 0, that means add new node before
      * head node and make this new head.
      */
@@ -82,9 +86,27 @@ ll_node* ll_insert_node (ll_node *head, int pos, int val) {
         new_node->next = head;
         head = new_node;
         return head;
-    } else if (pos > 0) {
+    } else {
         ll_node *temp = head;
-        int i = 0;
+        int i = 1;
         for (;i<pos;i++) {
             temp = temp->next;
         }
+        if (i < pos) {
+            /* Length of Linked List is smaller
+             * than then position. Print error
+             * and return.
+             */
+            printf("Error. Linked list is small. Cannot insert. Returning");
+            return head;
+        }
+        new_node = ll_add_node(val);
+        if (!new_node) {
+            printf("Error while adding new node. Returning.");
+            return head;
+        }
+        new_node->next = temp->next;
+        temp->next = new_node;
+        return head;
+    }
+}

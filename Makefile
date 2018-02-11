@@ -4,7 +4,8 @@ CC = gcc
 # Compile time flags to be used.
 CFLAGS += -Wall  # For enabling warnings
 CFLAGS += -g     # For enabling debugging
-CFLAGS += -O0    # For disabling optimization
+CFLAGS += -O0    # For disabling optimization.
+                 # If -O1/-O2/... is used, it enables that level of optimization
 
 # Dependencies on header files.
 DEPS = utilities.h

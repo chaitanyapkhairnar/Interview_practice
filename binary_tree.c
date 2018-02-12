@@ -3,7 +3,6 @@
  * for all the binary tree related operations.
  */
 
-#include <stdio.h>
 #include "utilities.h"
 
 /*
@@ -21,6 +20,40 @@ bt_node* bt_new_node(int val) {
     new_node->left = NULL;
     new_node->right = NULL;
     return new_node;
+}
+
+/*
+ * Insert node on left.
+ */
+bt_node* bt_insert_left(bt_node *root, int val) {
+    bt_node *new_node;
+
+    new_node = bt_new_node(val);
+    if(!root->left) {
+        root->left = new_node;
+        return root;
+    } else {
+        new_node->left = root->left;
+        root->left = new_node;
+        return root;
+    }
+}
+
+/*
+ * Insert node on right.
+ */
+bt_node* bt_insert_right(bt_node *root, int val) {
+    bt_node *new_node;
+
+    new_node = bt_new_node(val);
+    if(!root->right) {
+        root->right = new_node;
+        return root;
+    } else {
+        new_node->right = root->right;
+        root->right = new_node;
+        return root;
+    }
 }
 
 /*
@@ -57,5 +90,23 @@ void postorder_traverse(bt_node *root) {
     postorder_traverse(root->left);
     postorder_traverse(root->right);
     printf("%d ", root->value);
+}
+
+/*
+ * Height of the tree
+ */
+int bt_get_height(bt_node *root) {
+    int left_height = 0, right_height = 0;
+    if (root == NULL) {
+        return 0;
+    }
+    left_height = bt_get_height(root->left);
+    right_height = bt_get_height(root->right);
+
+    if (left_height > right_height) {
+        return left_height+1;
+    } else {
+        return right_height+1;
+    }
 }
 

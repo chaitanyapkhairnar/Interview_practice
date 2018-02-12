@@ -28,6 +28,8 @@ LFLAGS = -L/
 
 # Define source files. Add new source files here
 SRCS = linked_list.c \
+	   queue.c \
+	   binary_tree.c \
 	   main.c
 
 # Define object files. It uses suffix replacement MACRO.

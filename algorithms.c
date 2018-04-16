@@ -95,7 +95,7 @@ int binary_search_iterative(int *arr, int first, int last, int key) {
 /*
  * 3. Jump Search
  *    The idea is to get a block size 'm' in argument and
- *    first search only o, m, 2m, 3m, ... elements of array
+ *    first search only 0, m, 2m, 3m, ... elements of array
  *    and when we get the range arr[km] < key < arr[(k+1)m]
  *    then do linear search for key in this range.
  *    Complexity: O(sqrroot(n)) where n is length of array.
@@ -329,6 +329,14 @@ void merge_sort(int *arr, int left, int right) {
  * for subarray of size 4, 8 ...
  */
 
+int min_elem(int a, int b) {
+    if(a <= b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
 void merge_sort_iterative(int *arr, int len) {
     int current_size, left;
 
@@ -339,7 +347,7 @@ void merge_sort_iterative(int *arr, int len) {
          */
         for(left=0;left<len-1;left=left + 2*current_size) {
             int mid = left+current_size-1;
-            int right = min(left+2*current_size-1, len-1);
+            int right = min_elem(left+2*current_size-1, len-1);
 
             /* Merge these subarrays */
             merge(arr, left, mid, right);
@@ -375,7 +383,7 @@ int partition(int *arr, int low, int high) {
     /* Traverse the entire array and maintain a min_element
      * index.
      * Compare each element with the pivot element.
-     * If it is  than the pivot element, place it
+     * If it is smaller than the pivot element, place it
      * at the position next to min_element and continue.
      * In the end, put the pivot element next to the min_element
      * index. This is the correct position of pivot element and
@@ -422,8 +430,6 @@ void quick_sort(int *arr, int low, int high) {
     }
 }
 
-
-
 int main(void) {
     int *arr = (int *)malloc(sizeof(int)*100);
     printf("The given array is: \n");
@@ -435,9 +441,12 @@ int main(void) {
     printf("\n");
 
     /* Sort the array with different algorithms. */
-
-
-
+    merge_sort(arr, 0, 100);
+    printf("The sorted array is:\n");
+    for(int i=0;i<100;i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
 
     return 0;
 }

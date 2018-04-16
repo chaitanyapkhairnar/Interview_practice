@@ -1,0 +1,174 @@
+This is a info file about how to approach string related questions.
+
+Generally string related questions are categorized as below.
+
+General TIPS:
+1. Try to use HASH MAP to solve string questions.
+2. Try to use BIT VECTOR (a single integer) instead of HASH MAP to reduce extra space.
+3. Try to sort the string if we cannot use extra space.
+4. Try using windowing method where 2 iterators are used and we move them front or back.
+5. Try to modify string from end to beginning.
+
+1. Find all the permutations of given string: Here, we need to find all possible 
+combinations using the characters in given string. Note that all the possible 
+combinations will be of same size as the given string. We are just finding the 
+permutations and not the super set.
+    For this type of question, we use backtracking. The idea is to get string and 
+start index in a recursive function, start a for loop from start index to end of 
+string, in each iteration of for loop, swap the start index with the current index 
+in for loop and then call the recursive function with start index++. After returning 
+from this function call, backtrack by swapping back. Base case will be if the start 
+index is end of string, print the string.
+    This approach does not take into consideration the case when there are duplicates 
+in the given string. If that is the case, it will print multiple permutations which 
+will be same when we permute duplicate characters. Time complexity is O(n*n!) because 
+there are n! permutations and for each permutation, we take n time to print it.
+
+2. Find all possible subsets of the given string: This problem is also called as 
+powerset problem. Given a string, we have to find all possible subsets. Note that 
+we are not finding the substrings, but we are finding subsets. substrings means 
+continues strings. For string "abc", substrings will be a, ab, abc, b, bc, c. But 
+subsets of this string will be a, b, c, ab, ac, abc, bc. Note here we have ac as 
+subset but it is not substring because ac is not continuous.
+    The idea here to find all the possible subsets is to use bit manipulation. 
+First we find the length of string say n. Then we find total number of possible 
+subsets which is 2^n. Now we start a for loop say i from 0 to 2^n and for each i, 
+we find position of bits in i which are set. and we print only those position 
+characters from the string. This will be a subset. We do this for 0 to 2^n thus we get 
+all those subsets. Below is pseudocode.
+
+    say string = "abc". Length = 3, so no of subsets=2^3 = 8
+    for(i=0 to 8)
+        for(j=0 to 3)
+            if (i & 1 << j)     >>>> See if jth bit is set in i
+                printf(string[j]) >>> Print the jth character.
+
+    Time complexity is O(n*2^n) because we iterate for 2^n times and for each of this 
+iteration, we iterate n times so see if the bit is set or not.
+
+Another approach is using backtracking. We start a for loop from 0 to length of 
+string and for each of this iteration, we first push the current element in a temp 
+string and also in solution array and then recursively call itself with index++. 
+Then we pop the current element from the temp string for backtracking. This way 
+the complexity is O(2^n) because for each element in the array, we have 2 choices. 
+Either to include it or not. 
+
+3. Find all possible substrings of given string: Say given string is "abcd". 
+Substrings will be continuous strings as discussed above. Idea is to traverse each 
+character of string and for each character, find all possible substrings starting 
+with this character and then proceed with next characters. For first character "a", 
+there will be 4 substrings "a", "ab", "abc", "abcd". This is equal to length of given 
+string. For next character "b", there will be 3 substrings "b", "bc", "bcd" which 
+is len-1 and so on. So we have a outer for loop to traverse each character of given 
+string and then we have a inner for loop which runs for 1 to len-i times which 
+defines the length of each substrings. for each iteration of this inner loop, we 
+get end index as i+j and our start index is i. So we print the substring from start 
+to end. i.e. from i to i+j.
+    Pseudo Code:
+        for (i from 0 to length of given string)
+            for(len from 1 to length of string -i)
+                printf(given string from index i to i+j)
+
+Time Complexity is O(n^2)
+
+4. Find all possible subsets with given size: This is same as 2 but here we have to 
+print only those subsets whose size is given. Say given size is 2. So in this case, 
+we have to print only those subsets whose size is 2. For "abc", it will be "ab", "ac", 
+"bc".
+We can go with two approaches. The first one being same as the one we used in 2 above. 
+The only modification will be put a check inside the outer for loop to check if the 
+current number has n number of bits set where n is given size. If yes, only then 
+start the inner for loop else continue. The time complexity will be same. Another 
+approach will be to use recursion. We have a recursive function which takes the array, 
+size of array, a solution array, present index of solution array, present index of 
+given array and the given size as argument. This function will call itself recursively 
+2 times once for the case to include the present character and once for the case 
+for not including the present character. It will add the present character in 
+solution_array[index], then call itself with present index of solution array++ and 
+present index of given array++. Then it calls itself with present index of given 
+array++ but not incrementing the present index of solution array because this is 
+the case of not including the present character. The case cases will be to check 
+if the present index of solution array is equal to given length, if yes, print the 
+subset. Also check if present index of given array reaches end, if yes return.
+
+5. Given two strings, find if they contain same characters: We can use Hash map and 
+iterate first string and store in hashmap. then iterate second string removing the 
+elements from hashmap. Then finally traverse hashmap to see if all elements are 0.
+Time Complexity for this is O(m+n). But Space complexity is O(m) where m is length of
+larger string.
+Another approach is to use bit array to reduce the space complexity. Instead of using
+4 bytes for each element in hashmap, we can use single bit in a 4 byte integer. we do
+integer ^ 1 << string[i] to flip that particular bit. First we flip bits for string 1
+and then we iterate string 2 and flip the bits again. In the end if the 4 byte int is
+0 then it means both strings contain same characters or else they dont.
+Yet another method is to use xor operation on integer. initialize res=0. 
+Iterate first string and for each character, keep doing res = res ^ string[i]. 
+Then do the same for another string. 
+Whatever value is present in res is the value of character that is extra in another 
+string. If it is 0, then the strings are identical. Complexity is O(n)
+
+6. Given two strings, find minimum substring in str1 that has all elements in str2:
+Here first we traverse str2 and store all its characters in a hash table. The we 
+traverse given string and store its present character in another hash table and 
+then compare these two hash tables. If hash_given_str[present character] <= 
+hash_pattern[present character] then we increment the count. Else we proceed. If 
+the count becomes equal to pattern length, then we have the window. Now we try to 
+remove characters from the beginning of the window to reduce the size of the window. 
+For removing, we have another iterator say start. for given_string[start], we remove 
+element from hash and see if it still satisfies the given pattern. If yes we continue 
+doing this, else we stop and increment out normal iterator.
+
+7. Move some type of characters in a string to first/end of string inplace: These 
+type of questions need us to move some type of characters say all '0's or all 'a's 
+or all the characters at even/odd position etc. to either start of the string or 
+at the end of the string. We need to do this in place and have to maintain the order.
+The idea is to use two iterators say i and j. initially j=-1. for i=0 to length of 
+string, if string[i] satisfies the given condition to move (say we have to move 'a's in 
+front. so string[i] == a) then j++ and swap string[i] and string[j] and then continue 
+for i. This algo moves elements to the front maintaining their order. But the elements 
+going in the end do not maintain their order. Complexity is O(n).
+
+Now if we want to maintain order of both. (order of elements coming in front as well 
+as order of elements going in the end). We have to use another approach.
+
+8. Sort characters in array: One method of sorting characters in a string is to use 
+quick sort or merge sort. This takes O(nlogn). A more efficient method is to traverse 
+the string and store all the elements in the hash array with their count. Then traverse 
+the hash table and print each character count number of times. Complexity is O(n)
+
+9. Given a number, print all possible words from phone keuboard: We have to follow 
+the phone keypad which has 'abc' for number 2, 'def' for 3 and so on. We have to print 
+all possible combinations. The idea is to use recursion. We have a 2d array which 
+stores the 'abc', 'def', etc. words. We have a for loop to iterate through each digit 
+of the given word. Within this we have inner for loop to iterate through characters 
+for each of these digits from the 2d array. We store the first character in output 
+and then recursively call the function for next digit and so on. Complexity is O(4^n) 
+where n is length of the given number. 4 because for number 7 and 9, we have 4 
+characters on number pad.
+
+10. Given a list of sorted words, find the order of characters: In this question, 
+a list of sorted words is given. Based on the this list, we have to figure out the order 
+of individual characters so that the given list is sorted. e.g. For given string 
+{"caa", "aaa", "aab"}, the order of characters is {'c', 'a', 'b'} so that the above 
+list is sorted.
+The algorithm is first find the number of characters being used in all the words in 
+the given list. We can do this by traversing the words in the list one by one and 
+flood a hash map. Then traverse the hashmap to get nonzero indexes. These are the 
+list of unique characters used. Now create a graph (2d array) with these number of 
+characters. Now we need to add the directed edges to this graph. For this, we compare 
+all the adjascent pairs of words in the given list and for each pair, get the first 
+non matching character. Mark a directed edge for these characters in the graph. 
+For e.g. for "caa" and "aaa", the first nonmatching characters are c,a so a edge 
+is between c -> a. For next pair, "aaa" and "aab", the first non matching character 
+is a,b so a edge is between a -> b. Once the graph is built, do a topological sort 
+on this graph and this is the solution.
+
+11. Find all the anagrams from the given list of strings: First copy the given list 
+into a duplicate list and create a list of integers to store indexes. Now, for each 
+word in our duplicate list, sort its characters. Now, sort all these words in duplicate 
+list and while sorting this, perform same operations on the index list too. Now from 
+the index list, get indexes and print those words from the original list.
+
+12. Make changes in a string to make it something else: These type of questions ask 
+to make some changes in a given string such that the string becomes say palindrome 
+or say string now contains all characters from a to z or something else.

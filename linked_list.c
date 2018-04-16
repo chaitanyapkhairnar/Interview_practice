@@ -54,12 +54,12 @@ int ll_free_node (ll_node *node) {
 /*
  * Function to insert node at the front of list
  */
-void ll_insert_front(ll_node *head, int val) {
+void ll_insert_front(ll_node **head, int val) {
     ll_node *new_node;
     new_node = ll_add_node(val);
 
-    new_node->next = head;
-    head = new_node;
+    new_node->next = *head;
+    *head = new_node;
     return;
 }
 
@@ -91,13 +91,13 @@ void ll_insert_after_position(ll_node *head, int new_val, int search_val) {
 /*
  * Function to insert node at the end of the list.
  */
-void ll_insert_at_end(ll_node *head, int val) {
+void ll_insert_at_end(ll_node **head, int val) {
     ll_node *new_node, *temp_node;
     new_node = ll_add_node(val);
-    temp_node = head;
+    temp_node = *head;
 
-    if(head == NULL) {
-        head = new_node;
+    if(*head == NULL) {
+        *head = new_node;
         return;
     }
     while(temp_node->next) {
@@ -111,12 +111,23 @@ void ll_insert_at_end(ll_node *head, int val) {
 /*
  * Function to delete node with given value from the list.
  */
-void ll_delete_node_with_value(ll_node *head, int val) {
-    if(head == NULL) {
+void ll_delete_node_with_value(ll_node **head, int val) {
+    if(*head == NULL) {
         printf("List is empty. Nothing to delete.\n");
         return;
     }
-    ll_node *temp = head;
+    ll_node *delete_node;
+    if(*head->val == val) {
+        /* We need to delete the head node. */
+        delete_node = *head;
+        *head = (*head)->next;
+        if(!ll_free_node(delete_node)) {
+            printf("Some error while freeing the node.\n");
+        }
+        return;
+    }
+
+    ll_node *temp = *head;
     while(temp->next->value != val) {
         temp = temp->next;
         if(temp == NULL) {
@@ -125,7 +136,6 @@ void ll_delete_node_with_value(ll_node *head, int val) {
         }
     }
     /* We found the previous node of the node to be deleted. */
-    ll_node *delete_node;
     delete_node = temp->next;
     temp->next = delete_node->next;
     if(!ll_free_node(delete_node)) {

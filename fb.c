@@ -8,6 +8,70 @@
 #include <stdbool.h>
 
 /*
+ * Find the minimum window in string S which will contain all the characters in string T
+ */
+
+
+
+
+/*
+ * Given a tree, write a function to check if it is a binary search tree or not
+ */
+typedef struct tree_node {
+    int data;
+    struct tree_node *left;
+    struct tree_node *right;
+}tree_node;
+
+bool checkIfBinary(tree_node *root, int min, int max) {
+    // Base Case
+    if(root == NULL) {
+        return true;
+    }
+
+    if(min == -1 && max == -1) {
+        // Root of the tree. This always lies in the range. Update the min and max
+        // and proceed.
+        bool isLeftBinary = checkIfBinary(root->left, min, root->data);
+        bool isRightBinary = checkIfBinary(root->right, root->data, max);
+        return (isLeftBinary && isRightBinary);
+    }
+
+    if(min == -1) {
+        if(root->data >= max) {
+            return false;
+        }
+    } else if(max == -1) {
+        if(root->data <= min) {
+            return false;
+        }
+    } else {
+        if(root->data >= max || root->data <= min) {
+            return false;
+        }
+    }
+    bool isLeftBinary = checkIfBinary(root->left, min, root->data);
+    bool isRightBinary = checkIfBinary(root->right, root->data, max);
+    return (isLeftBinary && isRightBinary);
+}
+
+bool checkBST(tree_node *root) {
+    /*
+     * A tree is a BST if all the nodes on the left subtree of the root are less
+     * than or equal to root and all the nodes on the right subtree of root are
+     * greater than the root. We pass two variables min and max to the recursive
+     * function along with the root node and for each subtree, we recursively check
+     * if the root lies within the range of min and max values of its parent.
+     */
+    if(root == NULL) {
+        return false;
+    }
+    int minVal=-1;
+    int maxVal=-1;
+    return checkIfBinary(root, minVal, maxVal);
+}
+
+/*
  * 1. Given an array nums, write a function to move all 0's to the end of it
  *    while maintaining the relative order of the non-zero elements.
  */

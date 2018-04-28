@@ -1,13 +1,13 @@
 This is a info file about how to approach string related questions.
 
-Generally string related questions are categorized as below.
-
 General TIPS:
 1. Try to use HASH MAP to solve string questions.
 2. Try to use BIT VECTOR (a single integer) instead of HASH MAP to reduce extra space.
 3. Try to sort the string if we cannot use extra space.
 4. Try using windowing method where 2 iterators are used and we move them front or back.
 5. Try to modify string from end to beginning.
+
+Generally string related questions are categorized as below.
 
 1. Find all the permutations of given string: Here, we need to find all possible 
 combinations using the characters in given string. Note that all the possible 
@@ -66,7 +66,7 @@ get end index as i+j and our start index is i. So we print the substring from st
 to end. i.e. from i to i+j.
     Pseudo Code:
         for (i from 0 to length of given string)
-            for(len from 1 to length of string -i)
+            for(j from 1 to length of string - i + 1)
                 printf(given string from index i to i+j)
 
 Time Complexity is O(n^2)
@@ -87,7 +87,7 @@ for not including the present character. It will add the present character in
 solution_array[index], then call itself with present index of solution array++ and 
 present index of given array++. Then it calls itself with present index of given 
 array++ but not incrementing the present index of solution array because this is 
-the case of not including the present character. The case cases will be to check 
+the case of not including the present character. The base cases will be to check 
 if the present index of solution array is equal to given length, if yes, print the 
 subset. Also check if present index of given array reaches end, if yes return.
 
@@ -116,7 +116,7 @@ the count becomes equal to pattern length, then we have the window. Now we try t
 remove characters from the beginning of the window to reduce the size of the window. 
 For removing, we have another iterator say start. for given_string[start], we remove 
 element from hash and see if it still satisfies the given pattern. If yes we continue 
-doing this, else we stop and increment out normal iterator.
+doing this, else we stop and increment our normal iterator.
 
 7. Move some type of characters in a string to first/end of string inplace: These 
 type of questions need us to move some type of characters say all '0's or all 'a's 
@@ -136,7 +136,7 @@ quick sort or merge sort. This takes O(nlogn). A more efficient method is to tra
 the string and store all the elements in the hash array with their count. Then traverse 
 the hash table and print each character count number of times. Complexity is O(n)
 
-9. Given a number, print all possible words from phone keuboard: We have to follow 
+9. Given a number, print all possible words from phone keyboard: We have to follow 
 the phone keypad which has 'abc' for number 2, 'def' for 3 and so on. We have to print 
 all possible combinations. The idea is to use recursion. We have a 2d array which 
 stores the 'abc', 'def', etc. words. We have a for loop to iterate through each digit 

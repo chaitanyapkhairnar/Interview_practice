@@ -158,8 +158,6 @@ void transpose(int matrix[SIZE][SIZE]) {
             swap(&matrix[i][j], &matrix[j][i]);
         }
     }
-//    printf("Transpose of given matrix is:\n");
-//    print_matrix(matrix);
 }
 
 // Function to reverse all the columns of the given matrix

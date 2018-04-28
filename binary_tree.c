@@ -109,4 +109,3 @@ int bt_get_height(bt_node *root) {
         return right_height+1;
     }
 }
-

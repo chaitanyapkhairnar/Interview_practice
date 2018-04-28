@@ -9,6 +9,7 @@
  * A. The root of Heap is at 0th index.
  * B. For node at ith index, Its left child should be present at 2*i+1 and right child at 2*i+2
  * By following the above, The index of Parent of node at ith index is at (i-1)/2
+ * Time complexity is O(log(n)) for insert, delete, decreasekey operations. O(1) to get min.
  */
 
 #include <stdio.h>
@@ -22,11 +23,11 @@ void heapify(int);  /* Function to heapify the subtree with the given index of r
 int parent(int);    /* Function to return the index of parent of the given node index */
 int right(int);     /* Function to return the index of the right child of given node index */
 int left(int);      /* Function to return the index of the left child of given node index */
-int getMin();    /* Function to get the minimum value present in the heap */
+int getMin();       /* Function to get the minimum value present in the heap */
 int extractMin();   /* Function to extract the root while maintaining the heap property */
 void decreaseKey(int , int); /* Function to decrease the key value at index i to new_val */
-void deleteKey(int);                 /* Function to delete the key at given index */
-void insertKey(int);                 /* Insert a new key of given value at appropriate place */
+void deleteKey(int);         /* Function to delete the key at given index */
+void insertKey(int);         /* Insert a new key of given value at appropriate place */
 
 
 /*

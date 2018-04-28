@@ -39,7 +39,7 @@ bool isPath(int graph[SIZE][SIZE], int x, int weight) {
 
     /*
      * If weight is not less than zero but current
-     * vertex is laready visited, then return false
+     * vertex is already visited, then return false
      * to avoid cycles.
      */
     if(visited[x]) {

@@ -54,7 +54,7 @@ node* ternary_to_tree(char *str, int len, int start) {
         root->left = ternary_to_tree(str, len, start+1);
     } else if((start<len) && (str[start] == ':')) {
         temp = stack_pop(&head);
-        while(temp && (!temp->right)) {
+        while(temp && (temp->right)) {
             temp = stack_pop(&head);
         }
         if(!temp) {

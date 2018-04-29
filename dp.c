@@ -1,5 +1,5 @@
 /*
- * This file contains all the problems and descriptions
+ * This file contains theory and descriptions
  * regarding Dynamic Programming.
  */
 

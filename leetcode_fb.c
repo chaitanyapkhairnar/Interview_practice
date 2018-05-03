@@ -435,3 +435,84 @@ bool findWord(char **matrix, int row_len, int column_len, char **string,
     }
     return false;
 }
+
+/*
+ * 13. Lowest common ancestor
+ *     Solution in another document.
+ */
+
+/*
+ * 14. Course Schedule: Given n number of courses and a list of dependencies
+ *     of each course, give a list of courses in the order they should be taken
+ *     e.g. 4 [[1,0],[2,0],[3,1],[3,2]] means there are 4 courses to be taken
+ *     such that course 0 is prerequisite for course 1 and 2. 1 is prereq for 3
+ *     and 2 is also prereq for 3. So the order of courses should be 0,1,2,3
+ *
+ *     For these type of dependency related questions, we use topological
+ *     sorting. First we create a directed graph with edges from independent
+ *     course to the dependent course. Then we do topological sorting on this
+ *     graph. If topological sorting does not exists, then answer is not
+ *     possible. If topological sorting exists, then this is the answer.
+ *
+ *     In our example, the graph formed will be as below. All edges are directed
+ *     and point in downward direction.
+ *                  0
+ *                /   \
+ *               1     2
+ *                \   /
+ *                  3
+ *     Now, we do topological sorting of this graph. Topological sorting means
+ *     for every directed vertex say from a to b, always print a first and then b.
+ *     So in aboe graph, 0 should always come before 1 and 2 and similarly, 1 and 2
+ *     should always come before 3. So topological sort will be 0,1,2,3 or 0,2,1,3.
+ *     And this is the answer. Any scheduling task where there is dependency
+ *     between the tasks is done by this algo.
+ *
+ *     Time Complexity is same as DFS. O(V+E)
+ *
+ *     Look how to implement Topological Sorting in geeksforgeeks.
+ */
+
+/*
+ * 15. Maximal Square: Given a 2d matrix of 1s and 0s, find the largest square
+ *     with all 1s and return its area.
+ *
+ *     We use Dynamic Programming here. We take another 2d integer array of same
+ *     dimentions as given array. This array will store the size of biggest
+ *     square that can be formed such that the value at arr[i][j] represents the
+ *     size of square that can be formed considering the cell i,j in the given
+ *     matrix is the bottom rightmost cell of this square being formed. We
+ *     initialize the arr to all 0s. The we copy the values of given 2d array
+ *     into arr for 1st row and 1st column. This is for initialization. Now, we
+ *     start a for loop for i=1 to row_len and j=1 to column_len. For each cell,
+ *     we get min value of the 3 adjascent cells to it which are i-1,j i-1,j-1
+ *     and i,j-1. Then we add 1 to this min val and we update this value to i,j
+ *     cell of arr. This way, we build the full array. We also keep track of max
+ *     value. In the end, this is the max length of square that can be formed.
+ *     Area will be max_val^2.
+ *
+ *     Time complexity is O(mn) and extra space requirement is also O(mn).
+ */
+
+/*
+ * 16. Account Merge: Given a list of strings where each string has name as
+ *     first member and then a list of emails. Different accounts may have
+ *     same name. We have to look into emails and merge the accounts having
+ *     atleast 1 common email.
+ *     
+ *     accounts = [["John", "johnsmith@mail.com", "john00@mail.com"], 
+ *                 ["John", "johnnybravo@mail.com"], 
+ *                 ["John", "johnsmith@mail.com", "john_newyork@mail.com"], 
+ *                 ["Mary", "mary@mail.com"]]
+ *     Output: [["John", 'john00@mail.com', 'john_newyork@mail.com',
+ *               'johnsmith@mail.com'],
+ *               ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]]
+ *
+ *     We use concept of graph here. We use hash to store names against the
+ *     email addresses. Then we create a graph such that there is nondirected
+ *     edge between the emails belonging to same account. Once this is done
+ *     for all the accounts, then we find the connected components and create
+ *     a list of these and add name by finding it from hash and return the list.
+ *
+ *     Time complexity is O(summation of (alog(a)))
+ */

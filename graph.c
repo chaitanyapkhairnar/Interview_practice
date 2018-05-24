@@ -160,4 +160,3 @@ bool Graph_has_cycle(Graph *graph) {
  * print this as MST. for e.g. for all elements in parent, edge = parent[i]------ i
  * Time complexity os O(V^2)
  */
- * the unvisited neighbors are added, we continue the for loop.

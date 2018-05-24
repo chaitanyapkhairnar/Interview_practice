@@ -293,19 +293,6 @@ void min_breaks(char *str, int len, int start, int *min_break, int level,
     }
 }
 
-/*
- * 6. Find if there is a rectangle in the given 2d binary matrix with all its corners
- *    as 1s. A NXM 2d matrix is given, we need to find if there exists a rectange PXQ
- *    where P<N and Q<M such that all its corner vertices has value 1.
- *    The given NXM matrix has 0s or 1s in it.
- *
- *    One approach is we traverse each and every vertex in the given 2d array, and for
- *    each vertex, we have a for loop starting from vertex+1 to M. In this for loop,
- *    we check if points x, y; x, y+i; x+i, y; x+i, y+i all have 1s. If yes, we return
- *    true else we continue the for loop. The complexity is very bad. Its O(n^2 X m^2).
- *
- */
-
 int main(void) {
     char *str = "10110001";
     printf("Min flips required for %s is %d\n", str, min_flips_reqd(str));

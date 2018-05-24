@@ -31,7 +31,7 @@ void backtrackingParenthesis(char *result, int max_len, int open_cnt, int close_
     }
 
     if(close_cnt > 0) {
-        result[start] = '(';
+        result[start] = ')';
         backtrackingParenthesis(result, max_len, open_cnt, close_cnt-1, start+1);
     }
 }
@@ -122,7 +122,7 @@ int numberOfIslands(int **grid, int rows, int columns) {
  *    We can use linked list to store the result as it is easier to insert
  *    elements in any index. We can store people's height in one array and
  *    second numbers in another. Then we sort array1 with same operations on
- *    array2. The we start taking the larger elments and store it in linked
+ *    array2. The we start taking the larger elements and store it in linked
  *    list. Time complexity is n^2 as it takes n^2 to insert n elements in
  *    the linked list.
  */
@@ -215,7 +215,7 @@ int numberAddition(int *a1, int *a2, int len1, int len2) {
  *    push element-min to stack. This would be 0 for first element. Then for next
  *    push onwards, we push element - min to stack. If element - min is +ve, we
  *    do not update the min. But if it is -ve, then we push that -ve element as is
- *    and update the min = element. For pop, we the element in +ve, we just add min
+ *    and update the min = element. For pop, if the element in +ve, we just add min
  *    to this popped element and return. But if it is -ve, then we return the min
  *    and then we update min = min + (abs(popped element)). As this was previous
  *    min. To get min, we just return the min.
@@ -380,14 +380,9 @@ int getMin(stack **top) {
  * 15. First unique char in string: Given a string, return the index of first
  *     char that is unique.
  *
- *     We use hash here. We start the string traversal from end. For each char,
- *     if it is not present in the hash, we store its index in unique_id and mark
- *     it as visited in hash. If the char is already present in the hash, we do
- *     not update the unique_id. Finally, we have the index. One imp corner case
- *     to verify is, when we see a char in hash, also check if this char is same
- *     as char present in the unique_id. If yes, reset unique_id to -1, else do
- *     not update the unique_id. This is to handle the case where no unique
- *     chars are present in the string. In that case, we return -1.
+ *     Parse the string first and store the count in hash. Then parse the string
+ *     again checking the count in hash and print first char whose count is 1.
+ *
  *     Time complexity is O(n) where n is len of string.
  */
 

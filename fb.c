@@ -254,6 +254,15 @@ bool isduplicate(int *arr, int len) {
  * a[i] and b[j] and insert whichever is smaller in result[k].
  * Then we check if array a or b is remaining and insert all the remaining
  * elements in result.
+ *
+ * To do it in place, we start iterating array2 from last to first. Inside
+ * this loop, we first store last element on array1 in temp variable, and
+ * then start a loop for array1 starting from len-1 to start comparing
+ * if arra1 element is greater than array2 element. If yes, then we copy
+ * jth element in j+1 and do j--. This is to make space in array 1. Finally
+ * we put array2's element in array 1's position and continue.
+ *
+ * This is O(m*n) complexity.
  */
 
 int* mergesorted(int *a, int *b, int len1, int len2) {

@@ -2,6 +2,24 @@
  * This file contains the function to see if there exists a
  * path in the given graph whose total weight is greater than
  * or equal to the given weight.
+ *
+ * We are using backtracking here. What backtracking essentially does is,
+ * It does a depth first search. For each neighbor node, it goes to its
+ * neighbor and then to its neighbor till it reaches the depth. If it finds
+ * the weight of this path greater than given value, then it returns true.
+ *
+ * Another way to do is Breadth First search. Here, we first check all our
+ * neighbors and only then go to next level where we check all of their
+ * neighbors and so on.
+ *
+ * In this case, doing Depth First search is better because we need to find
+ * the particular path whose depth is greater than given value. So, if say we
+ * have 10 neighbors and the path going through 4th neighbor has this depth,
+ * then using DFS, we would have to traverse all neighbors of our first 4
+ * neighbors only. But in the case of BFS, we will traverse all 10 neighbors
+ * then all neighbors of these 10 neighbors and so on, till we go to the
+ * level whose depth is equal to given depth. So more computations are
+ * required.
  */
 
 #include <stdio.h>

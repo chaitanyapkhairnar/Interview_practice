@@ -524,14 +524,31 @@ int lcs_dynamic(char *s1, char *s2, int l1, int l2) {
  * call the function for forward direction. If this returns false, we call the
  * function for downward direction. The base case is if x,y = n-1,n-1. i.e.
  * we reached destination. In this case, return true. Finally we print the solution
- * matrix which has the path.
+ * matrix which has the path. Here we are not marking any cell as visited. So, we
+ * may visit a cell multiple times. The time complexity of this is O(2^(r+c)) where
+ * r is number of rows and c is number of columns. This is because, as we can move
+ * in forward to downward direction, total number of steps in each path in worst
+ * case is r+c. and for each step, we make 2 choices either to go forward or down.
+ *
+ * We can improve this time complexity to O(rc), by avoiding computations for the
+ * cells again if we have already done it. We use a visited array for this. Whenever
+ * we visit a point (x,y), we mark it visited. And before visiting any point, we
+ * check if it is already visited or not. One simple hash function to use is
+ * 2x+3y. here x and y are coordinates of the maze. For each x,y visited, we mark
+ * visited[2x+3y] = true. Another simpler way is to use a 2d visited array and
+ * for x,y mark visited[x][y] = true.
  */
 
 //Maze size
 #define N 4
 
+//visited array
+bool visited[2N+3N] = {false};
+
 bool isValidDirection(int maze[N][N], int x, int y) {
-    if(x>=0 && y>=0 && x<N && y<N && maze[x][y] == 1) {
+    if(x>=0 && y>=0 && x<N && y<N && maze[x][y] == 1 && !visited[2*x + 3*y]) {
+        // Mark this point as visited
+        visited[2*x + 3*y] = true;
         return true;
     } else {
         return false;

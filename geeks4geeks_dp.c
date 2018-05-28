@@ -27,12 +27,19 @@
  *    for str1[0...i-1] and str2[0...j-1].
  *
  *    We return arr[m][n] which is the answer.
+ *
+ *    Time complexity is O(m*n)
  */
 int lcs(char *str1, int m, char *str2, int n) {
+    // Sanity check
+    if(!str1 || !str2 || m==0 || n==0) {
+        return -1;
+    }
+
     int dp[m][n];
 
-    for(int i=0; i<m; i++) {
-        for(int j=0; j<n; j++) {
+    for(int i=0; i<=m; i++) {
+        for(int j=0; j<=n; j++) {
             if(i==0 || j==0) {
                 dp[i][j] = 0;
             } else {
@@ -56,9 +63,9 @@ int lcs(char *str1, int m, char *str2, int n) {
 void printLcs(char *str1, int m, char *str2, int n, int **dp, int substringLen) {
     int x=m, y=n, z=substringLen;
     char res[substringLen];
-    while(x>0 && y>0) {
+    while(x>=0 && y>=0) {
         if(str1[x-1] == str2[y-1]) {
-            res[z] = str1[x-1];
+            res[z-1] = str1[x-1];
             x--;
             y--;
             z--;
@@ -81,8 +88,18 @@ void printLcs(char *str1, int m, char *str2, int n, int **dp, int substringLen) 
  *    each iteration, we update currSum=max(arr[i], currSum+arr[i]) and we
  *    update maxSum=max(currSum, maxSum). Finally at the end of array, we return
  *    maxSum.
+ *
+ *    Time Complexity is O(n)
  */
 int maxSumSubarray(int *arr, int len) {
+    // Sanity check
+    if(!arr || len <= 0) {
+        return -1;
+    }
+    if(len == 1) {
+        return arr[0];
+    }
+    
     int currSum=arr[0];
     int maxSum=arr[0];
 
@@ -92,6 +109,13 @@ int maxSumSubarray(int *arr, int len) {
     }
     return maxSum;
 }
+
+// In above algo, if we need to return the start and end index of the subarray
+// too then we need minor modifications. We define start and end int variables
+// and initialize them to 0. Now, whenever we update the maxSum, we update end
+// with the current index i. We check if arr[i] has the same value as updated
+// value in maxSum. If yes, we update start also with current index i, else
+// we do not update start. This way, in the end, we have start and end ids.
 
 /*
  * 3. Maximum square matrix: Given a 2d matrix, find the max size of submatrix
@@ -103,9 +127,18 @@ int maxSumSubarray(int *arr, int len) {
  *    as it is. Then starting from i=1 and j=1, for each element, we check if
  *    it is 1 and its neighbors (i-1,j), (i,j-1) and (i-1,j-1) are 1s. If yes,
  *    then this element forms a square of size 2. So we update its value. If
- *    not, we dont update the value. This way we get the max size.
+ *    not, we dont update the value. This way we get the max size. To get the
+ *    size of square matrix, for updating value, we do 1 + min(neighbors).
+ *    This will take care of checking if neighbors are 1 or 0.
+ *
+ *    Time complexity is O(mn).
  */
 int maxSquareMatrix(int **grid, int m, int n) {
+    // Sanity check
+    if(!grid || m <= 0 || n <= 0) {
+        return -1;
+    }
+
     int dp[m][n];
     int maxSize=0;
 
@@ -143,6 +176,8 @@ int maxSquareMatrix(int **grid, int m, int n) {
  *    is a n^2 approach. For each iteration, we compare i and j elements and
  *    update the dp array accordingly with the length of longest increasing
  *    subsequence till that index.
+ *
+ *    Time complexity is O(n^2)
  */
 int longestIncreasingSubsequence(int *arr, int len) {
     int max=0;
@@ -175,11 +210,11 @@ int longestIncreasingSubsequence(int *arr, int len) {
  *    by moving right from 0,0. Because there are no elements above them.
  *    So there is only 1 way to update these elements and that is by
  *    adding their cost to the cost of their prev element. So we update
- *    all the elements in first row of dp as dp[0][j] = dp[0][j] +
+ *    all the elements in first row of dp as dp[0][j] = cost[0][j] +
  *    dp[0][j-1]. Now, similarly, for all elements in first column,
  *    the only way to update them is by going down from 0,0 as there are
  *    no elements to the left of them. So we update all elements in first
- *    column as dp[i][0] = dp[i][0] + dp[i-1][0]. Once we are done with
+ *    column as dp[i][0] = cost[i][0] + dp[i-1][0]. Once we are done with
  *    this initialization, we start a loop for i=1 to row_len and j=1 to
  *    column_len and for each element, we now consider all three possibilities
  *    to reach it and get the min of these 3 options and update the cost.
@@ -361,6 +396,7 @@ int minEdit(char *str1, int m, char *str2, int n) {
  *    each element represents the price of piece of length index+1, return the
  *    max price we can get by cutting the rod at different places.
  *
+ *    We use greedy approach here. For each size, we try all possible cuts.
  *    The idea is to have an array of size n+1 which has the max price we can
  *    get by cutting the rod of length index+1. We initialize dp[0]=0. Now
  *    we start i from 1 to n and for this, we start j from 0 to i. At each
@@ -480,7 +516,7 @@ int minJumps(int *arr, int len) {
  *
  * Now, for i=1 to len of array, we update maxReach = max(maxReach, i+arr[i])
  * We also decrement step by 1 as we took 1 step to come here. We now check if
- * step became 0. If yes, we increment jump by 1 anc check if i >= maxReach.
+ * step became 0. If yes, we increment jump by 1 and check if i >= maxReach.
  * If yes, then it is not reachable, so return -1. If no, then we update 
  * step = maxReach - i. We also check if i reached len-1, then we reach the 
  * value of jump.
@@ -808,7 +844,7 @@ int eggDrop(int n, int k)
 {
     // There are total n eggs and k floors
     
-    // A 2D table where entery eggFloor[i][j] will represent minimum
+    // A 2D table where entry eggFloor[i][j] will represent minimum
     // number of trials needed for i eggs and j floors.
     int eggFloor[n+1][k+1];
     int res;
@@ -1143,3 +1179,225 @@ skyline_node* getSkyline(bldg_node *arr, int start, int end) {
     return result;
 }
 
+/*
+ * 25. Given an array of 1s and 0s, find the length of longest subarray that
+ *     has same number of 1s as 0s.
+ *
+ *     We maintain 2 arrays to store counts of 1s and 0s at each index. We
+ *     traverse the given array and for each i, we store the count of 1s till
+ *     now in count_1[i] array and count of 0 in count_0[i] array. Now, we
+ *     have count of 1s and 0s at each index. We note that for any i, if this
+ *     count is equal (count_1[i] == count_0[i]) then it means the subarray
+ *     from 0 to i has same number of 1s and 0s. But what about subarray that
+ *     does not start with 0th index? To overcome this, we define 1 more array
+ *     and in this array, we store the difference of count_1[i] and count_0[i].
+ *     What this means is, we are storing the offset between number of 1s and
+ *     0s at each index i. Now, if this difference is same at two different
+ *     indices, then it means that the subarray between these indices have
+ *     same number of 1s and 0s. Also, the difference of 0 means the subarray
+ *     from 0th index to the index which has difference 0 has same number of
+ *     1s and 0s. To get the max length of subarray, we use hash array to store
+ *     the first occurance of the diff value and whenever we come across it
+ *     again, we see the length and update the max length as required.
+ *     
+ *     Time Complexity is O(n).
+ */
+int longestSubArrayWithOnesAndZeros(int *arr, int len) {
+    int count_0[len] = {0};
+    int count_1[len] = {0};
+    int diff[len] = {-1};
+    int hash[len] = {-1};
+
+    if(arr[0] == 0) {
+        count_0[0] = 1;
+    } else {
+        count_1[0] = 1;
+    }
+    diff[0] = count_0[0]-count_1[0];
+
+    for(int i=1; i<len; i++) {
+        if(arr[i] == 0) {
+            count_0[i] = 1 + count_0[i-1];
+            count_1[i] = count_1[i-1];
+        } else {
+            count_1[i] = 1 + count_1[i-1];
+            count_0[i] = count_0[i-1];
+        }
+        diff[i] = count_0[i]-count_1[i];
+    }
+
+    int max_len = 0;
+
+    for(int i=0; i<len; i++) {
+        int len = 0;
+        if(diff[i] == 0) {
+            len = i;
+        } else {
+            if(hash[diff[i]] != -1) {
+                len = i - hash[diff[i]] + 1;
+            } else {
+                hash[diff[i]] = i;
+            }
+        }
+        if(len > max_len) {
+            max_len = len;
+        }
+    }
+
+    return len;
+}
+
+/*
+ * 26. Circus Tower Problem: Give a list of height and weight of people, we
+ *     have to return max possible people that can be included in makin a
+ *     tower. A tower is made by people standing on the shoulder of each
+ *     other such that only shorter and lighter person can stand on the
+ *     top of another person.
+ *
+ *     Here, the constraint is for a person to be above another, he should
+ *     be both shorter and lighter than the person below him. We first sort
+ *     the height/weight array. Any array is fine, but we need to maintain
+ *     the relative order between height and weight arrays. Say we sorted
+ *     heigh array. Now, we know that each person in height array can stand
+ *     on top of next person in the array as height array is sorted. Now
+ *     to appy weight constraint too, we have to find out a sequence in
+ *     weight array such that all the elements in this array are in 
+ *     increasing order. Also, we need to maximize this sequence as much as
+ *     possible. This is nothing but finding longest increasing subsequence.
+ *
+ *     So, our approach is, Sort any one array first and then find longest
+ *     increasing subsequence of the other array. Time complexity is O(n^2).
+ */
+
+/*
+ * 27. Max sum square: Given a NXN matrix, find a square submatrix with max
+ *     sum. The size of submatrix should be KXK.
+ *
+ *     We are given restriction on the size of submatrix. To find the sum of
+ *     all possible kXk submatrixes within given nXn matrix, we create
+ *     another matrix of size NXN. We first traverse each column in given
+ *     matrix starting from row 0 to k and get the sum of all these k
+ *     columns and store in new matrix at 0,0. Now, we get sum of k rows
+ *     starting from row 1 and store this sum at 1,0. We do this for each
+ *     column. So our new matrix stores the sum of k columns such that
+ *     new_matrix[i][j] has the sum of row i to row i+k in jth column.
+ *
+ *     Once we have this new_matrix filled, we traverse this new_matrix
+ *     now fixing each row and getting sum of k columns in this particular
+ *     row. Thus we have all possible sums of kXk submatrices.
+ *
+ *     Time complexity is O(n^2)
+ */
+int printSumSubarray(int **arr, int n, int k) {
+    if(k>n) {
+        return;
+    }
+
+    // Temp array to store the sum of kX1 subarrays from the given
+    // array.
+    int temp_arr[n][n];
+
+    // For each columns, get the sum of all possible k rows and store
+    // in temp_arr.
+    for(int col=0; col<n; col++) {
+        int sum = 0;
+        // Get sum of first k rows.
+        for(int row=0; row<k; row++) {
+            sum = sum + arr[row][col];
+        }
+        // Store this sum in our temp_arr
+        temp_arr[row][col] = sum;
+
+        // Now for rest of k sets of rows starting from row 1 onwards,
+        // to get the sum, we just remove arr[row-1][col] from our
+        // sum and add arr[row+k-1][col] to our sum and update temp_arr.
+        // This is O(1) operation.
+        for(int row=1; row<n-k+1; row++) {
+            sum = sum - arr[row-1][col] + arr[row+k-1][col];
+            temp_arr[row][col] = sum;
+        }
+    }
+
+    // Now we have temp_arr filled with the sum of all possible k sets of rows
+    // for each column. Now we get the sum for all possible k sets of columns
+    // for each row in this temp_arr. This way, we are getting the sum of
+    // kXk submatrix. We use similar approach as above.
+    int max_sum = 0;
+
+    for(int row=0; row<n-k+1; row++) {
+        int sum=0;
+        // Get sum of first k columns.
+        for(int col=0; col<k; col++) {
+            sum = sum + temp_arr[row][col];
+        }
+        // We got the sum of first kXk submatrix. Print it
+        printf("%d\n", sum);
+        max_sum = max(max_sum, sum);
+
+        // Now, we get sum of rest of all possible k columns.
+        for(int col = 1; col < n-k+1; col++) {
+            sum = sum - temp_arr[row][col-1] + temp_arr[row][col+k-1];
+            printf("%d\n", sum);
+            max_sum = max(max_sum, sum);
+        }
+    }
+    // We have max_sum filled with maximum sum. We return this.
+    // If we want to return the indices of submatrix, we can do that too.
+    // The indices of row and col when we update the max_sum are indeed the
+    // start indices of the submatrix in the given matrix.
+    return max_sum;
+}
+
+/*
+ * Now what if we need to find the max sum submatrix of any possible size.
+ * now K is not given to us.
+ *
+ * Here we use the concept of max sum subarray. We have to look for each
+ * possible submatrix. We fix left_col and right_col and then for each of
+ * these left_col,right_col pair, we get sum at each row. We store these
+ * sums in another 1d array. Now, we get max sum subarray of this 1d array.
+ * We update our max_sum and indices based on this sum. Once we are done
+ * for each possible pair of columns, we have the answer.
+ *
+ * Time complexity is O(n^3) because, we use O(n^2) to iterate for each
+ * possible pair of columns and for each of these, we use O(n) to get the
+ * max sum subarray.
+ */
+int maxSumSubmatrixPossible(int **arr, int n, int *left, int *right, int *top,
+                            int *bottom) {
+    // We have to return maxSum and have to fill left, right, top and bottom
+    // with the vertices of the submatrix with max sum.
+
+    // We define a temp array of size N to hold the sum of all columns
+    // between left_col and right_col for each row.
+    int temp_sum[n] = {0};
+
+    int max_sum = 0;
+
+    // We fix left_col and right_col and try to get max sum subarray for
+    // each of these pairs.
+    for(int left_col=0; left_col<n; left_col++) {
+        temp_sum[n] = {0};
+        for(int right_col=left_col; right_col<n; right_col++) {
+            // Get sum for each row in temp_sum
+            for(int row=0; row<n; row++) {
+                temp[row] = temp[row]+arr[row][right_col];
+            }
+            // Now get max sum subarray of temp_sum
+            int temp_top=0, temp_bottom=0;
+            int sum = maxSumSubarray(temp, n, temp_top, temp_bottom);
+            // Here we assume that above function will fill the temp_top
+            // and temp_bottom values for us.
+            if(sum > max_sum) {
+                max_sum = sum;
+                *left = left_col;
+                *right = right_col;
+                *top = temp_top;
+                *bottom = temp_bottom;
+            }
+
+            // Continue by shifting right_col to right.
+        }
+    }
+    return max_sum;
+}

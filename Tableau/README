@@ -1,0 +1,49 @@
+Description: This source code directory is for Mars Rover functionality. The
+             main function reads start coordinate, end coordinate, grid width,
+             grid height, grid string from user via console. Then it creats a
+             RoverMapper object and calls getPath() to get the path.
+             
+             Rover.h is the header file containing the RoverMapper class
+             definitions and some other variable definitions used.
+
+             Rover.cpp is the source code containing the RoverMapper class
+             implementation along with all the member function implementations
+             getPathInternal() is the private method used to calculate the
+             path from source to destination. It uses the concept of DFS.
+             It maintains a vector to store the path and prints it when we
+             reach the destination.
+
+Steps to execution:
+             1. run "make clean" to clear any remaining objects/executibles
+             2. run "make all" to build all the source codes. It will create
+                an executible named 'out'
+             3. run "./out" to run the executible.
+             4. Enter the values as prompted on the screen.
+             5. It will display the results on the screen in the end.
+
+Assumptions:
+            1. Our Mars rover can move only in 2 directions. One is straight
+               forward and another is straight in downward direction.
+            2. We parse the grid string such that every 'width' chunk of
+               elements comprise of a row. So there will be 'height' number
+               of rows in our grid and 'width' number of columns.
+            3. We return the first found path from the grid. We are NOT
+               searching for shortest path.
+
+Future enhancements:
+            1. If we need to add more directions for the rover's movement
+               the only change required will be to change the macro
+               MOVE_DIRECTIONS' value and add x and y cordinates to
+               rowMove and columnMove arrays for this new direction.
+
+Tests:
+            1. Test for invalid input from user for all possible fields
+               It should throw an error.
+            2. Test for grid with no path
+               It should inform that no path is found.
+            3. Test for grid with multiple paths
+               It should display any one path
+            4. Test for grid with only single path
+               It should display that path.
+            
+            test logs are in test.log file attached.

@@ -1,0 +1,162 @@
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110101111010000111
+Path found as below:
+0,0,0,1,0,2,1,2,2,2,3,2,3,3,3,4
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 111101011110100001
+ERROR : Invalid string representing the grid
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110101111010000110
+Path does not exist in the grid.
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 4
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110101111010000111
+ERROR : Invalid end coordinates
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 5
+Please enter the width : 11110101111010000111
+Please enter the height : Please enter the grid string : ERROR : Invalid width or height
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 5
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110101111010000111
+ERROR : Invalid end coordinates
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 3
+Please enter the start Y coordinate : 5
+Please enter the end X coordinate : 0
+Please enter the end Y coordinate : 0
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110101111010000111
+ERROR : Invalid start coordinates
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : -3
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 11110101111010000111
+Please enter the height : Please enter the grid string : ERROR : Invalid width or height
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : -3
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110101111010000111
+ERROR : Invalid start coordinates
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : -4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110101111010000111
+ERROR : Invalid end coordinates
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : -5
+Please enter the height : 4
+Please enter the grid string : 11110101111010000111
+ERROR : Invalid width or height
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : -4
+Please enter the grid string : 11110101111010000111
+ERROR : Invalid width or height
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 111101011110100001111111010111101000011111110101111010000111
+ERROR : Invalid string representing the grid
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110101111010100111
+Path found as below:
+0,0,0,1,0,2,0,3,1,3,1,4,2,4,3,4
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 1
+Please enter the start Y coordinate : 1
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 3
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110111111010100111
+Path found as below:
+1,1,1,2,2,2,3,2,3,3
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 
+0
+Please enter the start Y coordinate : 0
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 4
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110
+ERROR : Invalid string representing the grid
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 1
+Please enter the start Y coordinate : 1
+Please enter the end X coordinate : 3
+Please enter the end Y coordinate : 3
+Please enter the width : 5
+Please enter the height : 4
+Please enter the grid string : 11110111111010100123
+ERROR: Grid string contains invalid values.
+ckhairnar-mbp:Tablaeu ckhairnar$ ./out 
+Please enter the start X coordinate : 3
+Please enter the start Y coordinate : 4
+Please enter the end X coordinate : 5
+Please enter the end Y coordinate : 4
+Please enter the width : 1
+Please enter the height : 1
+Please enter the grid string : 3
+ERROR : Invalid start coordinates

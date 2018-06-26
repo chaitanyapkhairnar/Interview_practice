@@ -1,3 +1,38 @@
+Problem Statement: Your rover has been dropped onto a Martian landscape at the
+                   starting coordinate with instructions to visit a particular site.
+                   The landscape is defined as a rectangular system of size W,H.
+                   Each grid point is either safe (1) or unsafe (0) to cross.
+
+                   Input Line: startX, startY, endX, endY, width, height, 
+                               110101010101010001… 
+
+                   startX, startY – Rover starting position
+                   endX, endY – Rover end point
+                   width, height – map width and height
+                   110101010101010001… string representing each grid point and
+                                       whether it is safe to cross.
+ 
+                   Output: startX, startY, X1,Y1,X2,Y2,X3,Y3…endX,endY
+
+                   All grid coordinates from start to end.
+
+                   Please write a console based application  in C++ or Java.
+
+                   Tests are required
+
+                   Validate that a valid path is generated
+
+                   Validate that if there is no valid path the right error 
+                   is displayed
+
+                   Imagine you are writing this software for Tableau.
+                   You expect this software to be code reviewed by other
+                   engineers and checked into our code base. Years later,
+                   imagine another software engineer needs to make
+                   modifications to your software to support other use cases.
+                   How would you build this in a way which easily permits
+                   modification by other engineers?
+ 
 Description: This source code directory is for Mars Rover functionality. The
              main function reads start coordinate, end coordinate, grid width,
              grid height, grid string from user via console. Then it creats a

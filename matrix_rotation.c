@@ -96,7 +96,6 @@ void rotate_matrix(int matrix[SIZE][SIZE], int size) {
 }
 
 /*
- * TODO: Not working.
  * This function rotates the matrix by 90 degrees clockwise
  */
 void rotate_matrix_ninety(int matrix[SIZE][SIZE], int size) {
@@ -109,26 +108,29 @@ void rotate_matrix_ninety(int matrix[SIZE][SIZE], int size) {
      * move all the elements in that layer to their correct position using
      * another for loop and a temp variable to store an element.
      */
-    int layer = size/2;
+    int L = size/2;
 
     // For each layer in array
-    for(int x=0; x<layer; x++) {
+    for(int layer=0; layer<L; layer++) {
+        // Get the size of array for this layer
+        int sizeL = SIZE - 2*layer;
+
         // For each element within array
-        for(int y=x; y<size-x-1; y++) {
+        for(int k=layer; k<sizeL; k++) {
             // Store the current element in temp
-            int temp = matrix[x][y];
+            int temp = matrix[layer][k];
 
             // Move the value from bottom corner to current
-            matrix[x][y] = matrix[size-1-x][y];
+            matrix[layer][k] = matrix[sizeL-1-k][layer];
 
             // Move the value from bottom right to bottom left
-            matrix[size-1-x][y] = matrix[size-y-1][size-1-x];
+            matrix[sizeL-1-k][layer] = matrix[sizeL-1][sizeL-1-k];
 
             // Move the value from left top to left bottom
-            matrix[size-y-1][size-1-x] = matrix[x][size-y-1];
+            matrix[sizeL-1][sizeL-1-k] = matrix[k][sizeL-1];
 
             // Finally move temp to top left
-            matrix[x][size-y-1] = temp;
+            matrix[k][sizeL-1] = temp;
         }
     }
 

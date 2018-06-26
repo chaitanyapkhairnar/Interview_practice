@@ -1,3 +1,16 @@
+/*
+ * This file contains source code to create a binary tree from given ternary
+ * expression. If its a ?, we add it to left else we add it to right.
+ *
+ * We use stack here to keep track of previous nodes. We start traversing the
+ * given string and create a node for current char. Then we see if next char is
+ * a ? or a :. If its a ?, we push current node in stack and then recursively
+ * call the function for node->left. If its a : then we pop item from stack
+ * and if the right of this popped node is NULL, we recursively call the
+ * function for popped_node->right. If not, we keep on popping until we get a
+ * specific node. Finally, we return root of tree.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

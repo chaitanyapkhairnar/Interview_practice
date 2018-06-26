@@ -8,10 +8,24 @@
 #include <stdbool.h>
 
 /*
- * Find the minimum window in string S which will contain all the characters in string T
+ * Find the minimum window in string S which will contain all the characters 
+ * in string T.
+ *
+ * We use windowing method and hash table here. First we traverse string T
+ * and store all its characters in hash. Now we initialize start and end 
+ * to 0 and count and min_len to 0. While count != length of T, we increment
+ * end one by one on S and keep checking if it is present in hash or not. If
+ * present, then we increment the count and continue. Once we come out of
+ * this loop, we start another loop while count == length of T and move
+ * our end pointer one by one. We also maintain a seperate hash for our S
+ * string which we filled when we moved our end pointer. Now while moving
+ * start pointer, we remove element from the S hash and compare S hash and T 
+ * hash and if not same, we decrement the counter. Now we update the min_len
+ * as end-start and continue to move end. We do all this while end is less
+ * than the length.
+ *
+ * Time complexity is O(n)
  */
-
-
 
 
 /*
@@ -335,7 +349,7 @@ int LongestIncreasingSubarray(int *arr, int n) {
  * subarray. We need to find longest subsequence in the given array which is in
  * increasing order.
  *
- * The idea here is to use dynamic programming. We maintain a array list[] which
+ * The idea here is to use dynamic programming. We maintain an array list[] which
  * stores the longest length of subsequence for each index i such that list[i] has
  * the value of longest length of subsequence in given array from 0 to present element
  * i. We first initialize list[] to all 1s as minimum length of subsequence will be
@@ -382,6 +396,8 @@ int LengthOfLongestIncreasingSubseq(int *arr, int len) {
 /*
  * https://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
  *
+ * This is called patience sorting algorithm.
+ *
  * The idea is to maintain an array which has only the last element of all possible
  * active lists till present. If for current iteration, the element in the given array
  * is smaller than the smallest element present in the active list array, replace it with
@@ -410,7 +426,7 @@ int get_index(int *active_lists, int left, int right, int key) {
 
 
 int LengthOfLongestSubsequenceNLogN(int *arr, int len) {
-    /* Array to maintain last elments of active lists */
+    /* Array to maintain last elements of active lists */
     int *active_lists = (int *)malloc(sizeof(int) * len);
     /* index of active_lists which points to next available slot. */
     int index = 1;
@@ -487,7 +503,7 @@ int lcs_recursive(char *s1, char *s2, int l1, int l2) {
 int lcs_dynamic(char *s1, char *s2, int l1, int l2) {
     /* Create a 2d table to store the lengths of common
      * subsequence. table[i][j] will store the max length
-     * of subsequence of s1 till index 1 and s2 till index j.
+     * of subsequence of s1 till index i and s2 till index j.
      */
     int **table;
     table = (int **)malloc(sizeof(int *)*l1);

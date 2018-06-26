@@ -85,13 +85,13 @@ int longestSubstringWithoutDuplicates(char *str, int *start, int *end) {
     return maxLen+1;
 }
 
-/* 2. Longest Palindromic substring in given string. */
+/* 2. Longest Palindromic substring in given string.
+ * We traverse the entire string and for each i, we try to build
+ * palindromic string around it by expanding in both directions.
+ * We have to consider both even and odd length palindrome cases.
+ * This is O(n^2) approach.
+ */
 char* longestPalindromeSubstring(char* s) {
-    /* We traverse the entire string and for each i, we try to build
-     *  palindromic string around it by expanding in both directions.
-     *  We have to consider both even and odd length palindrome cases.
-     *  This is O(n^2) approach.
-     */
     int low, high;
     int len = strlen(s);
     int maxLen=0;

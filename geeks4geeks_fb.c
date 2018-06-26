@@ -118,34 +118,9 @@ void all_interpretations(int arr[], int arr_len) {
  *                                                                     / \
  *                                                                    b   c
  *    The expression can be nested like a?b?c:d:e
- *    The idea is to traverse the string and make first element as root of tree and
- *    then recursively build the tree such that if its a ?, then add the next element to
- *    the left of parent and if its a :, add it to right of parent.
+ *    
+ *    See ternary.c for detailed implementation.
  */
-typedef struct Tree_node {
-    char val;
-    struct Tree_node *left;
-    struct Tree_node *right;
-}Tree_node;
-
-Tree_node* ternary_to_tree(char *str, int len, int index) {
-    if(index >= len) {
-        return NULL;
-    }
-    Tree_node *root = (Tree_node*)malloc(sizeof(Tree_node));
-    root->val = str[index];
-    root->left = NULL;
-    root->right = NULL;
-    index++;
-    if(index < len) {
-        if(str[index] == '?') {
-            root->left = ternary_to_tree(str, len, index+1);
-        } else {
-            root->right = ternary_to_tree(str, len, index+1);
-        }
-    }
-    return root;
-}
 
 /*
  * 4. Largest sum subarray with at-least k numbers
@@ -160,7 +135,7 @@ Tree_node* ternary_to_tree(char *str, int len, int index) {
  *    increment another counter say unique_counter. We update the sum and store the sum
  *    in the max_sum if it is > the max_sum. Once we have k unique elements, we move the
  *    start pointer and remove that element from sum and from hash. We check if the
- *    unique counter needs to be updated of not. We also update max_sum if needed. We
+ *    unique counter needs to be updated or not. We also update max_sum if needed. We
  *    keep doing this until our unique counter goes below k. After this, we again 
  *    increment end pointer and continue. In the end, we get max sum.
  */

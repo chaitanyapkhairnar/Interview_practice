@@ -110,7 +110,7 @@ bool knightProblem(int x, int y, int **solution, int count) {
 
     // Traverse for all possible moves and check if it is valid and then
     // recursively call
-    for(int i-0; i<8; i++) {
+    for(int i=0; i<8; i++) {
         int new_x = x + xMove[i];
         int new_y = y + yMove[i];
 

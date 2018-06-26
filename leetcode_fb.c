@@ -17,7 +17,7 @@
  *    Number of transformations required is 4 as below
  *    hit -> hot -> dot -> dog -> cog.
  *
- *    We use the concept of DFS here. We start with the start word and put it into
+ *    We use the concept of BFS here. We start with the start word and put it into
  *    the queue along with the change counter value which is 0 for start word.
  *    Then we enter a while loop until queue is not empty. Inside this, we pop the
  *    element from the queue and store this popped word in currWord variable and
@@ -135,7 +135,7 @@ int decode_ways(char *str, int len) {
 }
 
 /*
- * 3. 3Sum: Given a array, return a list of unique triplets whose sum equals 0.
+ * 3. 3Sum: Given an array, return a list of unique triplets whose sum equals 0.
  *
  *    We do this in O(n^2). We first sort the array. Then we start a for loop
  *    from 0 to n. For each of this iteration, we get l=i+1 and r=len-1. Then
@@ -187,8 +187,8 @@ list* 3Sum(int *arr, int len) {
  *    Another method is to maintain a hash array which stores the sum of subarray
  *    till the current index. We initialize the hash[0]=arr[0]. Now for i=1 to len,
  *    we check if givenSum-arr[i] is present in the array. If yes, we have subarray
- *    from index of hash which has givenSum-arr[i] value to index i. If not, we
- *    update currSum and store it in hash and continue.
+ *    from index of hash +1 (which has givenSum-arr[i] value) to index i. If not, we
+ *    update currSum and store it in hash such that hash[currSum] = index and continue.
  *
  *    Time complexity is O(n) for both. The first approach does not handle -ve
  *    cases while second one does handle.
@@ -270,7 +270,7 @@ void subarraySum(int *arr, int len, int sum) {
  *    We have to consider all these possibilities for each index i and keep updating
  *    the min values. We use 4 integer variables n1 and n2 to maintain the count of
  *    no_swap operations and s1 and s2 to maintain count of swap operations. n1 and
- *    s1 are for previous and s1 and s2 are for current index. We initialize n1=0 and
+ *    s1 are for previous and n2 and s2 are for current index. We initialize n1=0 and
  *    s1=1 for index 0 as if we had only 1 element in both the arrays, we can either
  *    leave the elements as it is (n1=0) or swap the elements (s1=1). Now, we iterate
  *    for i=1 to len. For each i, we check the above possibilites and update n2 and s2
@@ -379,7 +379,7 @@ double rec_pow(double x, long long int n) {
  */
 
 /*
- * 11. Multiple strings: Given two strings that represent numbers, return a
+ * 11. Multiply strings: Given two strings that represent numbers, return a
  *     string that has the multiplication of both numbers.
  *
  *     This question already asked. Most probably it wont be asked again.
@@ -389,7 +389,7 @@ double rec_pow(double x, long long int n) {
 
 /*
  * 12. Word search: Given a 2d matrix with chars in it and given a string,
- *     return true is the string is found in the matrix. The word can be
+ *     return true if the string is found in the matrix. The word can be
  *     searched only in horizontal and vertical direction. You can go front
  *     and back and top and down, but we cannot use same visited char again.
  *
@@ -505,7 +505,7 @@ bool findWord(char **matrix, int row_len, int column_len, char **string,
  *                  \   /
  *                    0
  *     Now, we do topological sorting of this graph. Topological sorting means
- *     for every directed vertex say from a to b, always print b first and then a.
+ *     for every directed vertex say from a to b, always print a first and then b.
  *     So in above graph, 0 should always come before 1 and 2 and similarly, 1 and 2
  *     should always come before 3. So topological sort will be 0,1,2,3 or 0,2,1,3.
  *     And this is the answer. Any scheduling task where there is dependency
@@ -525,7 +525,7 @@ bool findWord(char **matrix, int row_len, int column_len, char **string,
  *     with all 1s and return its area.
  *
  *     We use Dynamic Programming here. We take another 2d integer array of same
- *     dimentions as given array. This array will store the size of biggest
+ *     dimensions as given array. This array will store the size of biggest
  *     square that can be formed such that the value at arr[i][j] represents the
  *     size of square that can be formed considering the cell i,j in the given
  *     matrix is the bottom rightmost cell of this square being formed. We
@@ -582,7 +582,7 @@ bool findWord(char **matrix, int row_len, int column_len, char **string,
  *     bottom have the length of consecutive 1s in respective directions. To get
  *     these, we use DP.
  *
- *     We define a 2D DP matrix. The for each row from 0 to n and for each
+ *     We define a 2D DP matrix. Then for each row from 0 to n and for each
  *     column from 0 to n, we calculate number of 1s to the left of present
  *     index and put these values in DP matrix.
  *
@@ -742,7 +742,7 @@ int cornerRectangles(int **grid, int row_len, int column_len) {
 
 /*
  * 20. Bipartite Graph: Given a graph return true if it is bipartite. A graph
- *     is bipartite all its nodes can be divided into two seperate subsets such
+ *     is bipartite if all its nodes can be divided into two seperate subsets such
  *     that for each edge present in the graph, the two nodes connected by the
  *     edge should be present in 2 different subsets. e.g.
  *     1-------2
@@ -924,7 +924,7 @@ int minBricksCrossed(int **wall, int rows) {
  */
 
 /*
- * 24. Given a array of 1s and 0s, find the number of subarrays which have
+ * 24. Given an array of 1s and 0s, find the number of subarrays which have
  *     equal number of 0s and 1s in them. e.g.
  *     arr = [0 0 1 1 0 1 0 0]
  *     total number of subarrays = 10
@@ -1132,7 +1132,7 @@ void fillHash(tree_node *root, int offset, ll_node **hash) {
  *     numbers that are not same. e.g. hammin distance between 5 and 2 is
  *     3 because total 3 bits have different values 101, 010
  *
- *     One way to do is to find all possible pairs if numbers and for each
+ *     One way to do is to find all possible pairs of numbers and for each
  *     of these pairs, do n1^n2 so that we get all those bits set which are
  *     not equal. Then count number of 1s from this result and this is the
  *     hamming distance between these two numbers. Keep doing this for all
@@ -1162,9 +1162,9 @@ int totalHammingDistance(int *arr, int len) {
     for(int i=0; i<len; i++) {
         int j=0;
         while(arr[i] > 0) {
-            count[i] += (arr[i] & 1);
+            count[j] += (arr[i] & 1);
             arr[i] >>= 1;
-            i++;
+            j++;
         }
     }
 
@@ -1225,7 +1225,6 @@ int maxSwaps(int input) {
             }
         }
     }
-
     return input;
 }
 

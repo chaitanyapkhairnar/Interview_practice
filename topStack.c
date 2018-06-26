@@ -331,7 +331,7 @@ int* nextWarmerDay(int *list, int len) {
  * 4. Asteroid Collision: Given an array of asteroids where value means the size
  *    of asteroid and sign (+/-) means direction (right/left). If there are asteroids
  *    moving in opposite direction, collision will happen and after collision, larger
- *    asteroid remains. If size is same, both are destroid. Return array after all
+ *    asteroid remains. If size is same, both are destroyed. Return array after all
  *    collisions.
  *
  *    We use stack here. We traverse the given array and for each +ve element, we

@@ -64,6 +64,10 @@ node* GetMiddle(node *root) {
             break;
         }
     }
+    // If the length of list is even, fast will be pointing to NULL and
+    // slow will be pointing to second mid. If the length of list is
+    // odd, fast will be pointing to last node and slow will be
+    // pointing to mid element.
     if(len%2) {
         printf("List is of even length. First middle element is %d and "
                "second middle element is %d\n", prev->val, slow->val);
@@ -503,9 +507,9 @@ void FlattenBstPreorder(tree_node *root) {
  * Another way to flatten the tree is to flatten using extra space recursively.
  * Here, we create three lists say list1, list2, list3. Say we want to flatten 
  * the tree Inorder.So first recursively call flatten function for root->left 
- * and store it in list1, then store in list2 the current root->val. This list 
+ * and store it in list1, then store the current root->val in list2. This list 
  * has single node. Then in list3, store the return value of flatten func for 
- * root->right. Now append these lists such that list1->list2->list3. and 
+ * root->right. Now append these lists such that list1->list2->list3. And 
  * return the correct head. This is more general method to flatten the tree and 
  * can be done for any order traversal.
  */
@@ -553,19 +557,23 @@ tree_node* Flatten(tree_node *root) {
     }
     if(root->left) {
         tree_node *left = Flatten(root->left);
-        while(left->right) {
+        while(left && left->right) {
             left = left->right;
         }
         root->left = left;
-        left->right = root;
+        if(left) {
+            left->right = root;
+        }
     }
     if(root->right) {
         tree_node *right = Flatten(root->right);
-        while(right->left) {
+        while(right && right->left) {
             right = right->left;
         }
         root->right = right;
-        right->left = root;
+        if(right) {
+            right->left = root;
+        }
     }
     return root;
 }

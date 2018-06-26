@@ -15,7 +15,7 @@ void generateParenthesis(int n) {
     char *result = (char*)malloc(sizeof(char)*2n);
     result[0] = '(';
 
-    backtrackingParenthesis(result, 2*n, n-1, n, 0);
+    backtrackingParenthesis(result, 2*n, n-1, n, 1);
     return;
 }
 
@@ -95,7 +95,8 @@ int numberOfIslands(int **grid, int rows, int columns) {
 
 /*
  * 4. Spiral Matrix: Given a 2d matrix, print it in spiral order.
- *    Solution is in SpiralMatrix.c file.
+ *    Solution is in SpiralMatrix.c file. The approach is same as
+ *    rotating the 2d array.
  */
 
 /*
@@ -639,3 +640,46 @@ int getMaxDistance(node *root) {
  *     min diff if required. Then we update prev = node and call for
  *     node->right. This way, we are checking for each neighboring pair and
  *     updating the diff. Finally, we return the diff.
+ */
+
+/* 26. Baloon burst problem: Refer this for problem:
+ *     https://leetcode.com/problems/burst-balloons/description/
+ *     Refer this for solution:
+ *     https://www.youtube.com/watch?v=IFNibRVgFBo
+ *
+ *     Time complexity is O(n^3).
+ */
+int baloonBurst(int *arr, int arr_len) {
+    // dp array to store the results.
+    int dp[arr_le][arr_len] = {0};
+
+    for(len=1; len<arr_len; len++) {
+        for(start=0; start<arrLen-len; start++) {
+            end = start + len - 1;
+            for(i=start; i<=end; i++) {
+                int leftVal=1;
+                int rightVal=1;
+
+                if(i != 0) {
+                    leftVal = arr[i-1];
+                }
+                if(j != arr_len-1) {
+                    rightVal = arr[j+1];
+                }
+
+                int before = 0;
+                int after = 0;
+
+                if(i != start) {
+                    before = dp[start][i-1];
+                }
+                if(end != i) {
+                    after = dp[i+1][end];
+                }
+
+                dp[start][end] = max(dp[start][end], (leftVal*arr[i]*rightVal + before + after));
+            }
+        }
+    }
+    return dp[0][arr_len-1];
+}

@@ -482,7 +482,7 @@ bool subsetSum(int *arr, int len, int sum) {
  *     max number of steps you can jump from that position, return min jumps
  *     required to reach the end of array.
  *
- *     One approach is maintain another dp array of same size as given array
+ *     One approach is to maintain another dp array of same size as given array
  *     dp contains min number of jumps required to reach current index from 0.
  *     Start traversing the given array, and for each i, get the value of arr[i]
  *     and update all the indices from i to arr[i] steps with min steps = 
@@ -892,7 +892,7 @@ int eggDrop(int n, int k)
  *     of jobs that can be executed given the fact that at a time, only one
  *     job can be done.
  *
- *     We need to find a list or jobs that are not overlapping and also we need
+ *     We need to find a list of jobs that are not overlapping and also we need
  *     to include as many jobs as possible. We use greedy algorithm here. If we
  *     start selecting jobs with as small end time as possible, we can say that
  *     we will end up selecting maximum possible number of jobs. So, we sort
@@ -947,6 +947,10 @@ int maxJobs(int *start, int *end, int len) {
  *     previous of it which does not overlap with it.
  *     We can use binary search for this searching and improve the 
  *     complexity to O(nlogn) as sorting is still required.
+ *
+ *     In short, we are sorting one of the arrays and then implementing
+ *     Longest increasing subsequence approach on another array by comparing
+ *     start time and end time and updating the profit value.
  */
 int maxWeightedJob(int *start, int *end, int *profit, int len) {
     // We define a structure to hold all these values for each job and
@@ -1006,6 +1010,11 @@ int maxWeightedJob(int *start, int *end, int *profit, int len) {
  *     value, enqueue that neighbor and continue.
  */
 void floodFill(int **grid, int x_len, int y_len, int i, int j, int new_val) {
+    // Base cases
+    if(!grid || i>x_len || j>y_len || grid[i][j] == new_val) {
+        return;
+    }
+    
     queue *q;
     queue_node temp;
     temp.x = i;
@@ -1107,7 +1116,7 @@ void replaceO(char **grid, int x, int y) {
  * 24. Skyline Problem: Given an array of nodes where each node has 3 members
  *     lx, rx and height. Each node represents a building with lx = x coordinate
  *     of left edge, rx is x coordinate of right edge and height is the height of
- *     the building. We have to return a array of points where each point has
+ *     the building. We have to return an array of points where each point has
  *     members x and h where x is x coordinate and h is height of that point.
  *     This returned array should represent the skyline.
  *
@@ -1275,11 +1284,11 @@ int longestSubArrayWithOnesAndZeros(int *arr, int len) {
  *
  *     We are given restriction on the size of submatrix. To find the sum of
  *     all possible kXk submatrixes within given nXn matrix, we create
- *     another matrix of size NXN. We first traverse each column in given
- *     matrix starting from row 0 to k and get the sum of all these k
- *     columns and store in new matrix at 0,0. Now, we get sum of k rows
+ *     another matrix of size NXN. We first fix each column in given
+ *     matrix and starting from row 0 to k and get the sum of all these k
+ *     rows and store in new matrix at 0,0. Now, we get sum of next k rows
  *     starting from row 1 and store this sum at 1,0. We do this for each
- *     column. So our new matrix stores the sum of k columns such that
+ *     column. So our new matrix stores the sum of k rows such that
  *     new_matrix[i][j] has the sum of row i to row i+k in jth column.
  *
  *     Once we have this new_matrix filled, we traverse this new_matrix

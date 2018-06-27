@@ -30,7 +30,7 @@ typedef struct ll_node {
  */
 typedef struct queue {
     ll_node *front, *rear;
-}queue;
+}queue_t;
 
 /*
  * Binary Tree node

@@ -1,0 +1,178 @@
+This file contains the design patterns in C++ and their implementation.
+
+1. Singleton Design Pattern: In this design pattern, we restrict creation of
+   only a single object of a particular class which we refer as singleton class
+   So, we cannot create multiple objects of singleton class. This can be a
+   requirement in the scenario such as Logger Class where we want only one
+   object which can access the log file to log entries. Or in case of DB access
+   class, we want only one object which connects to DB because multiple
+   connections can be costly.
+
+   Implementation: We use the concepts of static and access modifiers to
+   achieve this.
+
+   First lets see what is static. There can be a static variable or a static
+   function in a class. A static member variable in a class means that this
+   variable is shared by all the objects of this class. Whenever a object is
+   created, a new copy of member variables and functions are created for that
+   object, but if a member variable is mentioned as static, then only one
+   instance of this variable is created and is shared by all the objects. It
+   is initialized to 0 when first object is created when initialization is
+   not mentioned. If we want to initialize a static variable, we cannot do it
+   inside the class, but we can do it outside the class using :: operator.
+   e.g.
+   class Box {
+       public:
+           static int objCount;    // Static member variable
+
+           Box(void) {             // Constructor
+               objCount++;
+           }
+   };
+
+   int Box::objCount = 0;         // Initialize static variable outside class
+
+   Static member function is a function defined inside the class with static
+   keyword. What this means is this function can be called even if no object
+   is created for this class. The static member function can be accessed
+   using class name and scope resolution operator :: These functions are
+   independent of any objects. These functions can access only static
+   variables, other static functions within the class and all functions
+   outside the class.
+   e.g.
+   class Box {
+       public:
+           static int objCount;
+           static int getCount() {
+               return objCount;
+           }
+   };
+   Here, getCount() is a static function that accesses static variable
+   objCount. To call this function from outside the class, we do following
+   
+   int rc = Box::getCount();
+
+   Now we come to implementation of Singleton Class. For this, we define
+   the constructor of this class as private so that no one outside the class
+   can access it. We also define a static member function getInstance() which
+   will create an instance of this class and return pointer to this object.
+   This function makes sure that only 1 object is created and if it is called
+   multiple times, it will return the pointer to already created object.
+   So, for this, we also define an static object variable in the class.
+   The implementation is as below:
+
+   class Singleton {
+       private:
+           Singleton(){};           /* Make constructor private */
+           static Singleton *obj;   /* static Pointer to object */
+       public:
+           static Singleton* getInstance(); /* Public static function to create
+                                               object. */
+   };
+
+   Singleton* Singleton::obj = NULL    /* Initialize static obj to NULL */
+
+   /* Define getInstance function which returns the pointer to object if it
+    * already exists. If not, it creates the object and returns pointer to it.
+    * We want it static because we need to call it without creating the object
+    * and because this is static and it can access only static variables, we
+    * define pointer to object as static. We make this function as public so
+    * that anyone can call it, but we make constructor and pointer to obj
+    * private because we dont want it to be accessed by outside world.
+    */
+   Singleton* Singleton::getInstance() {
+       if(!obj) {
+           obj = new Singleton;
+       }
+       return obj;
+   }
+
+   From outside, when we want to create an object of singleton class, we do
+
+   Singleton *obj = Singleton::getInstance();
+
+   Then we can use this obj for calling any class related functions like below
+   obj->func();
+
+   There is one problem with this approach. This is not thread safe. Assume the
+   condition where multiple threads call the getInstance() at the same time.
+   Then each of them will see obj as NULL so for each of them a new obj will
+   be created. This defeats our purpose. To avoid this, we add a lock in
+   getInstance(). We need to lock only for the first time when new obj is
+   being created. So, we do something like below:
+
+   std::mutex mtx
+
+   Singleton* Singleton::getInstance() {
+       if(!obj) {
+           mtx.lock();               /* Acquire lock */
+           if(!obj) {                /* Check again because there may be
+                                        multiple threads for first time too */
+               obj = new Singleton;
+           }
+           mtx.unlock();             /* Release lock */
+       }
+       return obj;
+   }
+
+2. Factory Design Pattern: In this design pattern, we create objects without
+   exposing creation logic to the Client. Say we have a base class and multiple
+   derived classes. Now client wants to create specific object of a derived
+   class based on some user choice. So in this pattern, a public API is
+   provided by the Base class which will create objects for client. So, if
+   anything changes in future such as addition of new derived class, Client
+   Code need not to be changed.
+
+   Implementation: We use a public static member function to create objects
+   for client.
+   e.g.
+   class Vehicle {
+       public:
+           static Vehicle* create(int type); // Define static function create()
+           virtual void printClass() = 0;
+   };
+
+   class twoWheeler : public Vehicle {
+       public:
+           void printClass() {
+               cout << "twoWheeler Class" << endl;
+           }
+   };
+   class threeWheeler : public Vehicle {
+       public:
+           void printClass() {
+               cout << "threeWheeler Class" << endl;
+           }
+   };
+
+   Vehicle* Vehicle::create(int type) {  // Implement create() based on types
+       if(type == 1) {
+           Vehicle *obj = new twoWheeler;
+       } else if(type == 2) {
+           Vehicle *obj = new threeWheeler;
+       }
+       return obj;
+   }
+
+   class Client {
+       public:
+           Client(int val) {
+               obj = Vehicle::create(val);  // Client calls create based on
+                                               val used during construction
+                                               of object.
+           }
+           Vehicle* getVehicle() {
+               return obj;
+           }
+       private:
+           Vehicle *obj;
+   };
+
+   This way, say now a new class is introduced in library named fourWheeler.
+   Code changes are required in create() function to create object for this
+   fourwheeler. But no code changes are required in Client code. Only thing
+   is user needs to create Client object with a new choice number and this
+   will call create() with this new choice number and thus fourWheeler
+   object will get created.
+
+3. Decorator Pattern: TODO: see geeksforgeeks

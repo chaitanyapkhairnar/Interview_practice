@@ -1315,7 +1315,7 @@ int printSumSubarray(int **arr, int n, int k) {
             sum = sum + arr[row][col];
         }
         // Store this sum in our temp_arr
-        temp_arr[row][col] = sum;
+        temp_arr[0][col] = sum;
 
         // Now for rest of k sets of rows starting from row 1 onwards,
         // to get the sum, we just remove arr[row-1][col] from our

@@ -140,7 +140,7 @@ int numberOfIslands(int **grid, int rows, int columns) {
  */
 
 /*
- * 7. Number addition: Given two arrays of integers, return a array containing
+ * 7. Number addition: Given two arrays of integers, return an array containing
  *    the addition of these two arrays. The arrays contain digits of number such
  *    that MSB is in 0th index. e.g. a1=[1,2,3], a2=[9,9,8] then a3=[1,1,2,1]
  *
@@ -435,42 +435,32 @@ int getMin(stack **top) {
  * 19. Diameter of Binary tree: Given a root, return the diameter of binary tree.
  *     Diameter is the longest distance between any two nodes in the tree.
  *
- *     The longest distance between any two nodes has to pass through root. So,
- *     to get the longest distance, we get farthest left node and farthest right node
- *     from root and add their distances. To get the distance of farthest node
- *     from root, we recursively call for left and right child, get distances
- *     each of these and then add 1 to max of these and return.
+ *     The longest path may or may not pass through the root. To get the longest
+ *     path, we check the max of (diameter of left subtree, diameter of right subtree,
+ *     path between leaves including the root). We pass height as argument. Initially
+ *     0 is passed from main() function. In each function call, we update height
+ *     and also return diameter of that subtree.
  *     Time complexity is O(n).
  */
-int diameterBST(node *root) {
-    if(!root) {
-        return -1;
+int diameterBST(node *root, int *height) {
+    if(root == NULL) {
+        *height = 0;  /* Update height as 0 */
+        return 0;     /* Return diameter as 0 */
     }
-    if(!root->left && !root->right) {
-        return 0;
-    }
-    int leftdistance = 0, rightdistance = 0;
-    if(root->left) {
-        leftdistance = getMaxDistance(root->left);
-    }
-    if(root->right) {
-        rightdistance = getMaxDistance(root->right);
-    }
-    return leftdistance + rightdistance + 1;
-}
 
-int getMaxDistance(node *root) {
-    if(!root->left && !root->right) {
-        return 0;
-    }
-    int left=0, right=0;
-    if(root->left) {
-        left = getMaxDistance(root->left);
-    }
-    if(root->right) {
-        right = getMaxDistance(root->right);
-    }
-    return max(left, right) + 1;
+    int leftHeight=0;
+    int rightHeight=0;
+    int leftDiameter=0;
+    int rightDiameter=0;
+
+    leftDiameter = diameterBST(root->left, &leftHeight);
+    rightDiameter = diameterBST(root->right, &rightHeight);
+
+    /* Update the height */
+    *height = max(leftHeight, rightHeight) + 1;
+
+    /* Return the diameter */
+    return (max(leftHeight+rightHeight+1, max(leftDiameter, rightDiameter)));
 }
 
 /*
@@ -613,15 +603,15 @@ int getMaxDistance(node *root) {
  */
 
 /*
- * 24. Maximum average subarray: Given a array of size n and an integer k < n,
+ * 24. Maximum average subarray: Given an array of size n and an integer k < n,
  *     find the subarray of length k which has maximum average.
  *
  *     We are given window size k. So we use windowing here. We take 2 variables
  *     start and end. Initially start = 0 and end = 0. Then we move end to k steps
  *     ahead and keep getting the sum in sum variable. Now we take average
- *     by calculating sum/4 and store it. Now while end < len, we do
+ *     by calculating sum/k and store it. Now while end < len, we do
  *     sum=sum-arr[start--]+arr[++end] and get new average and update it only if
- *     it is more than our prev average. Finally when end reaches the end of array
+ *     it is more than our prev average. Finally when 'end' reaches the end of array
  *     we have the max average.
  */
 
@@ -641,6 +631,24 @@ int getMaxDistance(node *root) {
  *     node->right. This way, we are checking for each neighboring pair and
  *     updating the diff. Finally, we return the diff.
  */
+
+// Initially, min is INT_MAX and prev is NULL
+int getMinBST(tree_node *root, int *min, tree_node *prev) {
+    if(!root) {
+        return *min;
+    }
+
+    *min = getMinBST(root->left, min, prev);
+    if(prev == NULL) {
+        prev = root;
+    } else {
+        *min = minimum(min, root->val - prev->val);
+    }
+    *min = getMinBST(root->right, min, prev);
+
+    return *min;
+}
+
 
 /* 26. Baloon burst problem: Refer this for problem:
  *     https://leetcode.com/problems/burst-balloons/description/

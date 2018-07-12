@@ -153,7 +153,7 @@ list* 3Sum(int *arr, int len) {
 
     // We loop till len-2 because in last case, i will be at index len-2,
     // l will be at len-1 and r is also at len-1
-    for(int i=0; i<len-1; i++) {
+    for(int i=0; i<len-2; i++) {
         int l=i+1;
         int r=len-1;
         while(l<r) {
@@ -492,18 +492,18 @@ bool findWord(char **matrix, int row_len, int column_len, char **string,
  *     and 2 is also prereq for 3. So the order of courses should be 0,1,2,3
  *
  *     For these type of dependency related questions, we use topological
- *     sorting. First we create a directed graph with edges from dependent
- *     course to the independent course. Then we do topological sorting on this
+ *     sorting. First we create a directed graph with edges from independent
+ *     course to the dependent course. Then we do topological sorting on this
  *     graph. If topological sorting does not exists, then answer is not
  *     possible. If topological sorting exists, then this is the answer.
  *
  *     In our example, the graph formed will be as below. All edges are directed
  *     and point in downward direction.
+ *                    0               0 -> 1
+ *                  /   \             0 -> 2
+ *                 1     2            1 -> 3
+ *                  \   /             2 -> 3
  *                    3
- *                  /   \
- *                 1     2
- *                  \   /
- *                    0
  *     Now, we do topological sorting of this graph. Topological sorting means
  *     for every directed vertex say from a to b, always print a first and then b.
  *     So in above graph, 0 should always come before 1 and 2 and similarly, 1 and 2
@@ -515,9 +515,34 @@ bool findWord(char **matrix, int row_len, int column_len, char **string,
  *     adjacency list representation of graph and not the 2d matrix representation
  *     as Topological Sorting requires adjacency list representation.
  *
+ *     Topological Sort: We use a stack here. First we mark the node as visited and
+ *     then iterate through all its neighbors. For each neighbor, if not visited,
+ *     we recursively call the function. After this iteration, we push the element
+ *     in the stack. Finally, we print the stack.
+ *
+ *     topologicalSortUtil(int **graph, int *vertex, Stack *stack, int *visited) {
+ *         visited[vertex] = true;
+ *         for(all neighbors of vertex in graph) {
+ *             topologicalSortUtil(graph, neighborVertex, stack, visited);
+ *         }
+ *         stack.push(vertex);
+ *         return;
+ *     }
+ *
+ *     topologicalSort(int **graph){
+ *         Stack *stack = malloc;
+ *         int *visited = malloc;
+ *         for(all i) {
+ *             visited[i] = false;
+ *         }
+ *         for(all vertices in graph) {
+ *             if(!visited[vertex]) {
+ *                 topologicalSortUtil(graph, vertex, stack, visited);
+ *             }
+ *         }
+ *
  *     Time Complexity is same as DFS. O(V+E)
  *
- *     Look how to implement Topological Sorting in geeksforgeeks.
  */
 
 /*
@@ -866,7 +891,7 @@ subarrayWithMultipleSum(int *arr, int len, int k) {
  *     increment its count in hash. (hash[val]++). Finally, we get the max val
  *     in the hash - total number of rows and this is the answer. Basically,
  *     when we take running sum here, when multiple rows have same cumulative
- *     sum same at a particula index, that means that there is a edge there
+ *     sum at a particular index, that means that there is an edge there
  *     on all these rows. So we get max number of edges at a particular
  *     index to minimize the bricks crossed.
  *
@@ -996,7 +1021,7 @@ int getMaxSubarray0and1(int *arr, int len) {
  *
  *     We can do this in O(n). We first traverse the array and get the count
  *     of number of times k value is present in our array. If it is present
- *     only 1s, then there is no duplicate and directly return the index.
+ *     only one time, then there is no duplicate and directly return the index.
  *     If it is present for more than 1 time, then we generate a random
  *     number using time as seed in the range 0 to count. Then we again
  *     traverse the array and if we encounter the value k, we decrement this

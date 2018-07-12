@@ -268,8 +268,79 @@ void min_breaks(char *str, int len, int start, int *min_break, int level,
     }
 }
 
-int main(void) {
-    char *str = "10110001";
-    printf("Min flips required for %s is %d\n", str, min_flips_reqd(str));
-    return 0;
+/*
+ * 6. Given two sorted arrays, find the median of them.
+ *    We have to find the median of all the numbers in both the arrays.
+ *    One straight forward solution is to use the merge method of mergesort
+ *    and while merging, keep counting. Once the count reaches (n+m/2), we have
+ *    the median element. Here n and m are the lengths of given arrays. This is
+ *    O(n) approach. There is a better solution to this which is O(log(n))
+ *    approach where n is the length of the shorter array. The idea is to
+ *    partition arrays into 2 halves such that first half contains some
+ *    elements from array1 and some elements from array2 and second half
+ *    contains the rest of the elements. Now we have to reach a condition
+ *    such that all the elements in first half are smaller than all the
+ *    elements in the second half. Once we reach this condition, we have
+ *    the median. Please see below link for detailed explanation
+ *    https://www.geeksforgeeks.org/median-two-sorted-arrays-different-sizes-ologminn-m/
+ */
+int getMedian(int *a, int n, int *b, int m) {
+    /* Make sure that a is smaller length array. */
+    if(n>m) {
+        int *temp = a;
+        a = b;
+        b = temp;
+
+        int t = n;
+        n = m;
+        m = t;
+    }
+
+    int min, max, i, j, median=0;
+
+    min = 0;
+    max = n;
+
+    while(min < max) {
+        i = (min+max)/2;
+        j = ((n+m+1)/2)-i;
+
+        /* Check if b[j-1] > a[i] and if yes, update min=i+1;
+         * Similarly if a[i-1] > b[j], max = i-1;
+         * We want to reach the condition where
+         * a[i-1] <= b[j] && b[j-1] <= a[i]
+         */
+        if(i<n && j>0 && b[j-1] > a[i]) {
+            min = i+1;
+        }
+        else if(j<m && i>0 && a[i-1] > b[j]) {
+            max = i-1;
+        } else {
+            /* We have reached the condition. Now get the median */
+            if(i == 0) {
+                median = b[j-1];
+            } else if(j == 0) {
+                median = a[i-1];
+            } else {
+                median = max(a[i-1], b[j-1]);
+            }
+            break;
+        }
+    }
+
+    // If number of elements are odd, then return the median.
+    if(n+m % 2 == 1) {
+        return median;
+    } else {
+        // For even elements, median is average of two middle elements
+        if(i == n) {
+            return median+b[j]/2;
+        } else if(j == m) {
+            return median+a[i]/2;
+        } else {
+            return median+max(a[i], b[j])/2;
+        }
+    }
 }
+
+/* Time complexity is O(log(n)) */

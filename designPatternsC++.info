@@ -124,13 +124,17 @@ This file contains the design patterns in C++ and their implementation.
    Code need not to be changed.
 
    Implementation: We use a public static member function to create objects
-   for client.
+   for client. And in constructor of client, we call this function to get
+   object based on user choice.
    e.g.
+   /* Base Class */
    class Vehicle {
        public:
            static Vehicle* create(int type); // Define static function create()
            virtual void printClass() = 0;
    };
+
+   /* Derived Classes */
 
    class twoWheeler : public Vehicle {
        public:
@@ -155,6 +159,8 @@ This file contains the design patterns in C++ and their implementation.
    }
 
    class Client {
+       private:
+           Vehicle *obj;
        public:
            Client(int val) {
                obj = Vehicle::create(val);  // Client calls create based on
@@ -164,8 +170,6 @@ This file contains the design patterns in C++ and their implementation.
            Vehicle* getVehicle() {
                return obj;
            }
-       private:
-           Vehicle *obj;
    };
 
    This way, say now a new class is introduced in library named fourWheeler.
@@ -175,4 +179,649 @@ This file contains the design patterns in C++ and their implementation.
    will call create() with this new choice number and thus fourWheeler
    object will get created.
 
-3. Decorator Pattern: TODO: see geeksforgeeks
+3. Decorator Pattern: Decorator Pattern is a pattern where there is a super
+   class and then there is a derived concrete class and one or many derived
+   decorator classes. Each decorator class has an instance to concrete class.
+   Multiple decorator classes can decorate the concrete class. e.g Pizza store
+   application. Say we have 4 basic types of Pizzas and then say we have 3
+   toppings to choose from. We can add any topping to any pizza and we can add
+   multiple toppings (same as well as different). To design this, we use
+   decorator pattern as below.
+   With this approach, we can easily add or delete multiple decorators
+   without any change in the code implementation. See bottom for e.g on this.
+
+   a. We define an abstract class for Pizza:
+      class Pizza {
+          private:
+              string name;
+              string description;
+          public:
+              string getName() = 0;
+              string getDescription() = 0;
+              int getCost() = 0;
+      };
+
+   b. Now we define derived classes for the 4 basic types of pizzas.
+      class VeggiePizza : public Pizza {
+          public:
+              VeggiePizza() {               /* Constructor */
+                  name = "Veggie Pizza";
+                  description = "This is a veggie pizza";
+              }
+              string getName() {
+                  return name;
+              }
+              string getDescription() {
+                  return description;
+              }
+              int getCost() {
+                  return 100;
+              }
+      }
+
+      class MeatPizza : public Pizza {
+          public:
+              MeatPizza() {
+                  name = "Meat Pizza";
+                  description = "This is a Meat pizza";
+              }
+              string getName() {
+                  return name;
+              }
+              string getDescription() {
+                  return description;
+              }
+              int getCost() {
+                  return 200;
+              }
+      }
+
+      class PepperoniPizza : public Pizza {
+          public:
+              PepperoniPizza() {
+                  name = "Pepperoni Pizza";
+                  description = "This is a pepperoni pizza";
+              }
+              string getName() {
+                  return name;
+              }
+              string getDescription() {
+                  return description;
+              }
+              int getCost() {
+                  return 300;
+              }
+      }
+
+      class CheesePizza : public Pizza {
+          public:
+              CheesePizze() {
+                  name = "Cheese Pizza";
+                  description = "This is a cheese pizza";
+              }
+              string getName() {
+                  return name;
+              }
+              string getDescription() {
+                  return description;
+              }
+              int getCost() {
+                  return 400;
+              }
+      }
+
+   c. Now define a derived abstract class of Pizza class for decorator
+      class Toppingsdecorator : public Pizza {
+          private:
+              Pizza pizza    /* Reference to pizza we are decorating */
+          public:
+              string description = 0;
+      }
+
+   d. Now create topping classes derived from toppings decorator class
+      class Tomato : public Toppingsdecorator {
+          public:
+              Tomato(Pizza pizza) {    /* Constructor */
+                  this.pizza = pizza;
+              }
+              string getDescription() {
+                  return pizza.getDescription + ", Tomato ";
+              }
+              int getCost() {
+                  return pizza.getCost + 10;
+              }
+      }
+
+      class Basil : public Toppingsdecorator {
+          public:
+              Basil(Pizza pizza) {    /* Constructor */
+                  this.pizza = pizza;
+              }
+              string getDescription() {
+                  return pizza.getDescription + ", Basil ";
+              }
+              int getCost() {
+                  return pizza.getCost + 20;   /* Add the cost of topping (20)
+                                                  to the cost of base pizza */
+              }
+      }
+
+   e. Finally define the driver class which creates objects of above classes
+      class PizzaStore {
+          public:
+              int main(void) {
+                  /* Create a new Veggie Pizza */
+                  VeggiePizza veggie = new VeggiePizza;
+                  cout << veggie.getName() << " pizza created" << endl;
+                  cout << "Description: " << veggie.getDescription() << endl;
+                  cout << "Cost: " << veggie.getCost() << endl;
+
+                  /* Now add Tomato topping to it */
+                  veggie = new Tomato(veggie);
+                  cout << "Cost with Tomato: " << veggie.getCost() << endl;
+
+                  /* Now add Basil topping to it */
+                  veggie = new Basil(veggie);
+                  cout << "Cost with Basil: " << veggie.getCost() << endl;
+
+                  /* Get the final description of pizza */
+                  cout << "Final Description: " << veggie.getDescription() << endl;
+              }
+      }
+
+   We see here that in main(), we are first creating a base Veggie pizza and
+   then adding toppings to it by passing the VeggiePizza object veggie to
+   the constructors of the topping classes. We are storing these new objects
+   in the same variable veggie. Instead, if we create different variables for
+   each topping like below:
+
+   veggieWithTomato = new Tomato(veggie);
+   veggieWithBasil = new Basil(veggie);
+
+   Now, if we want to remove a topping, it is easy. We just delete that instance
+
+   delete veggieWithTomato;
+
+   This way, we can easily add and delete toppings without altering code of any
+   of the classes.
+
+4. Strategy Pattern: This type of pattern is used when we need to create multiple
+   objects of a class but these objects will have some behaviour changes as
+   compared to the main class definition. For e.g. Consider street fighter game.
+   In this game, we have say 4 characters kim, kom, jim and jon. There are 4
+   actions say punch, roll, kick, jump. Now the problem is, not all characters
+   have all these actions. Say kim can only punch and roll, kom can only punch
+   roll, kick and rest can do all the moves. Now, if we implement a class with
+   all the moves, then while deriving this class for subclasses for each char,
+   we have to override the function of actions to 'do nothing'. This is too
+   much to do for each of the future characters. This is the case to use
+   Strategy Pattern. In Strategy Pattern, we remove the methods that are not
+   common and may change for objects from the class definition and create
+   seperate classes for them. And in the main class, we get instance of these
+   classes and for that particular method, we call the method of these
+   instances. See e.g. of street fighter below
+
+   a. Define a Fighter class with common methods and instance variables for
+      non common methods. We say that puch and roll are common actions for
+      all the characters and jump and kick will vary for each character.
+      Some might not even have it and some will have different variations
+      of it.
+   class Fighter {
+       public:
+           JumpBehaviour jumpbehave; /* reference to jumpbehaviour object */
+           KickBehaviour kickbehave; /* reference to kickbehaviour object */
+
+           /* Constructor takes the behaviours and sets them. */
+           Fighter(JumpBehaviour jumpbehave, KickBehaviour kickbehave) {
+               this.jumpbehave = jumpbehave;
+               this.kickbehave = kickbehave;
+           }
+
+           virtual void display() = 0;
+
+           /* Default action punch for all characters */
+           void punch() {
+               cout << "Default punch" << endl;
+           }
+
+           /* Default action roll for all characters */
+           void roll() {
+               cout << "Default roll" << endl;
+           }
+
+           /* Call the jump action of jumpbehaviour object */
+           void jump() {
+               jumpbehave.jump();
+           }
+
+           /* Call the kick action of kickbehaviour object */
+           void kick() {
+               kickbehave.kick();
+           }
+
+           /* Set the behaviours that changed in runtime */
+           void setKickBehave(KickBehaviour kickbehave) {
+               this.kickbehave = kickbehave;
+           }
+
+           void setJumpBehave(JumpBehaviour jumpbehave) {
+               this.jumpbehave = jumpbehave;
+           }
+   };
+
+   b. Now define derived character classes
+      class Kim : public Fighter {
+          public:
+              Kim(KickBehaviour kickbehave, JumpBehaviour jumpbehave) {
+                  this.kickbehave = kickbehave;
+                  this.jumpbehave = jumpbehave;
+              }
+              void display() {
+                  cout << "Fighter Kim" << endl;
+              }
+      };
+
+      class Kom : public Fighter {
+          public:
+              Kom(KickBehaviour kickbehave, JumpBehaviour jumpbehave) {
+                  this.kickbehave = kickbehave;
+                  this.jumpbehave = jumpbehave;
+              }
+              void display() {
+                  cout << "Fighter Kom" << endl;
+              }
+
+      };
+
+      class Jim : public Fighter {
+          public:
+              Jim(KickBehaviour kickbehave, JumpBehaviour jumpbehave) {
+                  this.kickbehave = kickbehave;
+                  this.jumpbehave = jumpbehave;
+              }
+              void display() {
+                  cout << "Fighter Jim" << endl;
+              }
+
+      };
+
+      class Jon : public Fighter {
+          public:
+              Jon(KickBehaviour kickbehave, JumpBehaviour jumpbehave) {
+                  this.kickbehave = kickbehave;
+                  this.jumpbehave = jumpbehave;
+              }
+              void display() {
+                  cout << "Fighter Jon" << endl;
+              }
+
+      };
+
+   c. Define behaviour abstract classes for each non-common actions
+      and define derived subclasses for each type of non-common action
+      class JumpBehaviour {       /* Abstract JumpBehaviour class */
+          public:
+              void jump() = 0;
+      }
+
+      class LongJump : public JumpBehaviour { /* Derived class long jump */
+          public:
+              void jump() {
+                  cout << "Long jump" << endl;
+              }
+      }
+
+      class ShortJump : public JumpBehaviour { /* Derived class short jump */
+          public:
+              void jump() {
+                  cout << "Short jump" << endl;
+              }
+      }
+
+      class KickBehaviour {       /* Abstract KickBehaviour class */
+          public:
+              void kick() = 0;
+      }
+
+      class TornadoKick : public KickBehaviour { /* Derived class tornado kick */
+          public:
+              void kick() {
+                  cout << "Tornado Kick" << endl;
+              }
+      }
+   
+      class DeathKick : public KickBehaviour { /* Derived class death kick */
+          public:
+              void kick() {
+                  cout << "Death Kick" << endl;
+              }
+      }
+
+   c. Now define the driver class.
+      class StreetFighter {
+          public:
+              int main(void) {
+                  /* First create some behaviours */
+                  LongJump longjump = new LongJump;
+                  TornadoKick tornadokick = new TornadoKick;
+                  ShortJump shortjump = new ShortJump;
+                  DeathKick deathkick = new DeathKick;
+
+                  /* Now, we create characters with different moves */
+                  Kim kim = new Kim(longjump, tornadokick);
+                  Kom kom = new Kom(shortjump, deathkick);
+                  Jim jim = new jim();
+                  Jon jon = new jon();
+
+                  /* Change the behaviour in run time */
+                  jim.setKickBehave(tornadokick);
+                  jon.setJumpBehave(shortjump);
+
+                  /* Do the actions by characters */
+                  kim.punch();
+                  kim.roll();
+                  kim.jump();
+                  kim.kick();
+                  jim.kick();
+                  jon.jump();
+
+                  return 0;
+              }
+      }
+
+5. Observer Pattern: This pattern is used when we need to have subscriber model
+   For e.g. Say for a cricket match, we have a CricketData class which has a
+   function dataChanged() which gets called whenever there is update in the
+   score. Now, we want to print this score in two different screens, one is
+   current score and another is average score. So we define 2 more classes for
+   these, CurrentScore and AverageScore. Now we have to have some way so that
+   the score is communicated by CricketData to these classes. One way to do is,
+   define the objects of CurrentScore and AverageScore as member variables in
+   CricketData and set these in the constructor of CricketData. Now, the
+   function dataChanged() will call say update() function on CurrentScore and
+   AverageScore objects. The update function is responsible to print the scores
+   Thus we achieve the objective. But this is bad design because:
+   1. CricketData creates the objects for CurrentScore and AverageScore and so
+      it has way too much of information than required. We see that it has to
+      call only update function on these objects, so it does not need to have
+      any other information.
+   2. The classes CurrentScore and AverageScore are tightly coupled to the
+      class CricketData. Say, in future, we have another screen to display
+      something new. So, we will have a new class for this. But for this, we
+      need to make changes in the CricketData class by adding one more member
+      variable object for this class and calling update() function on this
+      object.
+
+   To avoid these problems, we use observer pattern here. We see that this
+   scenario maps to the scenario where there are multiple subscribers and one
+   publisher. This is a publisher-subscriber model where CricketData is
+   publisher and all the display classes are subscribers. The subscribers need
+   to subscribe to CricketData to get updates from it. In this way, publisher
+   will not have any extra information about the subscribers and also they are
+   not tightly coupled. The design of this pattern is as below:
+   We create a subscriber abstract class and we create multiple subclasses
+   derived from this subscriber abstract class. We have a publisher class
+   which maintains a list of subscriber objects. This class will have public
+   methods of subscribe() and unsubscribe() which other classes will call.
+
+   /* Abstract class for publisher */
+   class Publisher {
+       virtual void subscribe(Subscriber s);
+       virtual void unsubscribe(Subscriber s);
+       virtual void notifySubscriber();
+   };
+
+   /* Publisher class derived from above abstract class */
+   class CricketData : public Publisher {
+       private:
+           Subscriber *list;
+           int runs, overs, wickets;
+       public:
+           void subscribe(Subscriber s) {
+               list.add(s);
+           }
+           void unsubscribe(Subscriber s) {
+               list.remove(s);
+           }
+           void notifySubscriber() {
+               for(i in list) {
+                   Subscriber obj = list[i];
+                   obj.update(runs, overs, wickets);
+               }
+           }
+           void dataChanged() {
+               this.runs = 100;
+               this.overs = 13;
+               this.wickets = 3;
+
+               notifySubscriber();
+           }
+   }
+
+   /* Abstract class for subscribers */
+   /* This absctract class has only one member so the class CricketData which
+      creates a list of objects of type Subscriber does not know anything more
+      about subscribers except for this member function update()
+   */
+   class Subscriber {
+       public:
+           virtual void update(int runs, int overs, int wickets);
+   }
+
+   /* Now define derived classes for different displays */
+   class AverageDisplay : public Subscriber {
+       private:
+           float runRate;
+           int predictedScore;
+       public:
+           void update(int runs, int overs, int wickets) {
+               this.runRate = (float)runs/overs;
+               this.predictedScore = (int)(this.runRate*50);
+               display();
+           }
+           void display() {
+               cout << "\nAverage Score Display\n";
+               cout << "Run rate is: " << this.runRate;
+               cout << "Predicted Score: " << this.predictedScore;
+               cout << "\n";
+           }
+   }
+   class ScoreDisplay : public Subscriber {
+       private:
+           int runs, overs, wickets;
+       public:
+           void update(int runs, int overs, int wickets) {
+               this.runs = runs;
+               this.overs = overs;
+               this.wickets = wickets;
+               display();
+           }
+           void display() {
+               cout << "\nCricket Score Display\n";
+               cout << "Runs: " << this.runs;
+               cout << "Overs: " << this.overs;
+               cout << "Wickets: " << this.wickets;
+               cout << "\n";
+           }
+   }
+
+   /* Main driver class */
+   class Main {
+       public:
+          void main() {
+              AverageDisplay ad = new AverageDisplay;
+              ScoreDisplay sd = new ScoreDisplay;
+              CricketData cd = new CricketData;
+
+              cd.subscribe(ad);
+              cd.subscribe(sd);
+
+              cd.dataChanged();
+
+              cd.unsubscribe(ad);
+              cd.unsubscribe(sd);
+          }
+   }
+
+6. Command Pattern: This pattern is used in the scenarios where we need to
+   execute a command which might be doing different actions for different
+   objects. For e.g. Say we have a smart remote with multiple buttons on it.
+   We can program these buttons with different commands like turn on light,
+   turn off light, turn on cd player, etc. Now, we say these are the commands
+   and in runtime, we should be able to program the remote with different
+   commands and each of these commands may have multiple steps being executed
+   internally. For this scenario, we use command pattern.
+   We will have a remote class which will have an array of buttons as its
+   members. Now, we dont want this remote class to be tightly coupled to other
+   objects such as Light object, CD Player object, etc. So, we cannot have these
+   object members in our remote class. We dont want this because, later if a new
+   object comes into picture and user wants to program remote with this new thing,
+   we would need to make changes in the remote class to add a member variable
+   for this new object and we dont want this. Another restriction is, the remote
+   class should not have detailed knowledge about these objects. The only thing
+   remote needs to know is a function execute(). We dont want to make visible
+   the internal functionalities of light, cd player etc to remote. So, obviously
+   we will be using an abstract class. Below is the implementation of Command
+   Pattern.
+
+   class Remote {
+       private:
+           int noOfButtons = 10; /* Buttons on remote */
+           Command button[10];   /* Array of Command objects */
+
+       public:
+           void programButton(int buttonNo, Command com) {
+               button[buttonNo] = com;  /* Assign command to button */
+           }
+           void pressButton(int buttonNo) {
+               button[buttonNo].execute(); /* Execute the action on the command */
+           }
+   }
+
+   class Command {            /* Abstract class for command. Remote sees only execute
+       public:                 * function for this class. */
+           void execute();
+   }
+
+   class Light {              /* Light class to represent light */
+       public:
+           void on() {
+               cout << "Light turned on\n";
+           }
+           void off() {
+               cout << "Light turned off\n";
+           }
+   }
+
+   class CDplayer {           /* CD player class */
+       private:
+           void initializePlayer() {
+               cout << "Player Initialised\n";
+           }
+           void insertCD() {
+               cout << "CD inserted\n";
+           }
+           void play() {
+               cout << "Playing the CD\n";
+           }
+           void stop() {
+               cout << "Stopped playing the CD\n";
+           }
+           void ejectCD() {
+               cout << "CD ejected\n";
+           }
+        public:
+           void on() {
+               initializePlayer();
+               insertCD();
+               play();
+               cout << "CD Player turned ON\n";
+           }
+           void off() {
+               stop();
+               ejectCD();
+               cout << "CD Player turned OFF\n";
+           }
+   }
+
+   /* Now we define command classes which are derived from the abstract class */
+   class LightOn : public Command {    /* Command to turn on light */
+       Light light;
+       public:
+           LightOn(Light light) {
+               this.light = light;
+           }
+           void execute() {
+               light.on();
+           }
+   }
+   class LightOff : public Command {    /* Command to turn off light */
+       Light light;
+       public:
+           LightOff(Light light) {
+               this.light = light;
+           }
+           void execute() {
+               light.off();
+           }
+   }
+   class CDOn : public Command {    /* Command to turn on CD Player */
+       CDPlayer cd;
+       public:
+           CDOn(CDPlayer cd) {
+               this.cd = cd;
+           }
+           void execute() {
+               cd.on();
+           }
+   }
+   class CDOff : public Command {    /* Command to turn off CD Player */
+       CDPlayer cd;
+       public:
+           CDOff(CDPlayer cd) {
+               this.cd = cd;
+           }
+           void execute() {
+               cd.off();
+           }
+   }
+
+   /* Now main driver class */
+   class Main {
+       void main() {
+           /* Create objects for commands */
+           Light light = new light();
+           CDPlayer cd = new CDPlayer();
+           LightOn CommandLightOn = new LightOn(light);
+           LightOff CommandLightOff = new LightOff(light);
+           CDOn CommandCDOn = new CDOn(cd);
+           CDOff CommandCDOff = new CDOff(cd);
+
+           /* Now create Remote object */
+           Remote remote = new Remote();
+
+           /* Now program the Remote */
+           remote.programButton(1, CommandLightOn);
+           remote.programButton(2, CommandLightOff);
+           remote.programButton(3, CommandCDOn);
+           remote.programButton(4, CommandCDOff);
+
+           /* Now press button on Remote */
+           remote.pressButton(1);
+           remote.pressButton(2);
+           remote.pressButton(3);
+           remote.pressButton(4);
+       }
+   }
+
+7. Adapter Pattern: This pattern is used in the situations where there are two
+   classes with different interfaces and they need to communicate to each other
+   Here, we define another adapter class. Say we have classes A and B where A
+   has method run() and B has method execute(). Now, to make them uniform, we
+   define class Adapter_a which inherits from class A. So this will have method
+   run. Now, in this class, we get the instance/object of class B. Now, we
+   override the function run() such that, inside run(), it calls B.execute().
+   Now, from main class, if we make objects of A and call run, and make
+   objects of Adapter_a and call run, then for first case, run will be called
+   and for second case, execute will be called. Thus we have designed a class
+   to make the interfaces of both the classes uniform.

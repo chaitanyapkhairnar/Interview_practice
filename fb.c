@@ -159,6 +159,7 @@ void move_zeros_to_end(int *array, int len) {
  *
  *
  */
+
 /* Create a 2d boolean array */
 bool **dyn_table;
 

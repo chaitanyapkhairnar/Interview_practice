@@ -67,7 +67,7 @@ void mergeKsorted(int **arr, int K, int N, int *result) {
 
 /*
  * 2. Get Median from the running stream of integers:
- *    We have a running stram of integers and for each new integer
+ *    We have a running stream of integers and for each new integer
  *    we encounter, we have to return the median uptil now.
  */
 
@@ -142,3 +142,25 @@ void getMedian(int num, int *minHeap, int *maxHeap, int *median) {
     }
     return;
 }
+
+/*
+ * 3. Find k most frequent words from a file.
+ *    Given a file , we have to return k most used words in it.
+ *    We use a trie and min heap here. First we read the entire file and
+ *    store each word in the trie along with the count of occurance of that
+ *    word. So basically, our trie node will have an array of child node
+ *    pointers and along with that a bool isEndOfWord and an int count.
+ *    While reading file, for each word, we walk the trie to see if it
+ *    already exists or not. If not, add the word with count 1. If yes,
+ *    increment the count by 1. While doing so, after we update the count
+ *    of the word, we check if our min heap of size K has empty space. If
+ *    yes, we add the word to heap along with its count. Here heap node
+ *    has a string and an int members. We add the word to the end and index
+ *    of heap and call heapify. If heap has no empty space, then we get the
+ *    count of the top element of the heap. If the count of our word from trie
+ *    is greater than the count of heap top element, we replace heap's top
+ *    element and call heapify. We continue doing till end of file and we
+ *    have the k most frequent used words in our heap. The time complexity
+ *    is O(N*l*log(K)) where K is size of heap and N is total number of
+ *    words in the file and l is average size of each word.
+ */

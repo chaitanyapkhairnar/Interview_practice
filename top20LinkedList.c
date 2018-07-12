@@ -413,28 +413,32 @@ void MergeListsAlternate(node **list1, node **list2) {
     if(!*list1 || !*list2) {
         return;
     }
-    node *list1_prev, *list1_curr, *list2_curr, *list2_nxt;
+    node *list1_curr, *list1_nxt, *list2_curr, *list2_nxt;
 
-    list1_prev = *list1;
-    list1_curr = (*list1)->next;
+    list1_curr = *list1;
+    list1_nxt = list1_curr->next;
     list2_curr = *list2;
     list2_nxt = list2_curr->next;
 
-    while(list1_curr) {
-        list1_prev->next = list2_curr;
-        list2_curr->next = list1_curr;
+    while(list1_nxt) {
+        /* Change the next pointers */
+        list1_curr->next = list2_curr;
+        list2_curr->next = list1_nxt;
+        
+        /* Update the pointers */
         list2_curr = list2_nxt;
         if(!list2_curr) {
             break;
         }
         list2_nxt = list2_curr->next;
-        list1_prev = list1_curr;
-        if(!list1_prev) {
+        
+        list1_curr = list1_nxt;
+        if(!list1_curr) {
             break;
         }
-        list1_curr = list1_prev->next;
+        list1_nxt = list1_curr->next;
     }
-    //Update the head of list2
+    /* Update the head of list2 */
     *list2 = list2_curr;
     return;
 }
@@ -481,7 +485,7 @@ void DeleteLastOccurance(node *root, int key) {
  *     if it has a left child. If yes, then get the rightmost child of this left child
  *     and put the entire right subtree of current node to this rightmost child's right.
  *     Then move entire left subtree of current node to right and make left null.
- *     We do this because, in preorder, the node previous of current node is the rightmost
+ *     We do this because, in preorder, the previous node of current node is the rightmost
  *     child node of left child of present node.
  */
 void FlattenBstPreorder(tree_node *root) {

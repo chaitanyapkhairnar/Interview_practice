@@ -60,7 +60,7 @@ bool isValid(int row, int col, int *prevQueenPos) {
 
     int prev_row, prev_col;
     for(prev_row=0; prev_row<row; prev_row++) {
-        prev_col = prevQueenPos(prev_row);
+        prev_col = prevQueenPos[prev_row];
         // Now, prev queen is at prev_row,prev_col position. We check if our
         // position row, col lies in same column as prev queen or lies in a
         // diagonal position of prev queen. If yes, return false.

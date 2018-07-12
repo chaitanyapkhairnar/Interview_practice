@@ -46,7 +46,7 @@ int longestSubstringWithoutDuplicates(char *str, int *start, int *end) {
     // at p2 is present in hash or not. If not, get the curr len of substring
     // and update the maxLen if required and increment p2. But if char is present
     // in the hash, then check if the last found index of it is between p1 and p2.
-    // If yes, we move p1 to index beyond this one and update the length. If not,
+    // If yes, we move p1 to index beyond this one. If not,
     // then this is not part of our substring, so proceed with p2++
     int p1=0;
     int maxLen=0, currLen=0;
@@ -59,26 +59,20 @@ int longestSubstringWithoutDuplicates(char *str, int *start, int *end) {
     }
 
     // Traverse String
-    for(int i=0; i<len; i++) {
-        index = str[i] - 'a';
+    for(int p2=0; p2<len; p2++) {
+        index = str[p2] - 'a';
         if(hash[index] < 0 || (hash[index] < p1)) {
             // Char not yet visited.
-            hash[index] = i;
-            currLen = i-p1;
+            hash[index] = p2;
+            currLen = p2-p1;
             if(currLen > maxLen) {
                 maxLen = currLen;
                 *start = p1;
-                *end = i;
+                *end = p2;
             }
         } else {
             p1 = hash[index] + 1;
-            hash[index] = i;
-            currLen = i-p1;
-            if(currLen > maxLen) {
-                maxLen = currLen;
-                *start = p1;
-                *end = i;
-            }
+            hash[index] = p2;
         }
     }
 
@@ -284,7 +278,7 @@ char* RotateString(char *str, int d) {
     }
     
     // Reverse str from 0 to d
-    int start = 0, end = d-1;
+    int start = 0, end = d;
     while(start < end) {
         char temp = str[start];
         str[start] = str[end];
@@ -294,7 +288,7 @@ char* RotateString(char *str, int d) {
     }
 
     // Reverse str from d+1 to len
-    start = d;
+    start = d+1;
     end = len-1;
     while(start < end) {
         char temp = str[start];

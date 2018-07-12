@@ -130,7 +130,7 @@ int tripleStep(int n) {
  * This represents downward move. Once first row and column are filled, we fill rest of the cells
  * by iterating for i=1 to r and j=1 to c. For all these cells, we use below formula
  * sol_arr[i][j] = sol_arr[i][j-1] | sol_arr[i-1][j] if grid[][] is non-zero.
- * Else, sol_arr[i][j] = false. Then we check aol_arr[r][c]. If it is true then we have a path
+ * Else, sol_arr[i][j] = false. Then we check sol_arr[r][c]. If it is true then we have a path
  * from 0,0 to r,c. Else, we do not have a path. Now to print the path, we start with r,c cell
  * and print these indices first. Then we check if i, j-1 cell is true. If yes, we print this
  * and update our i and j to now point to i, j-1. Else we do this for i-1, j cell. We keep

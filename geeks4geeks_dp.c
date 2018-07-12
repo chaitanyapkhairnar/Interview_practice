@@ -778,13 +778,13 @@ int knapsack(int *val, int *wt, int n, int W) {
  *
  *     We use a hash array here to store the already visited characters. We
  *     store their most recent index in the hash array. We maintain a start
- *     and end iterators and a maxLen variable. Initiall, start and end are at
+ *     and end iterators and a maxLen variable. Initially, start and end are at
  *     0 and maxLen is 0. We also put 0th char in the hash array with idx=0.
  *     Now, for end = 1 to len of string, we check if the present char is
  *     present in the hash. If not, we add it to hash with its index and
  *     continue. If it is present in hash, then we check if the index in hash
  *     is in between start and end. If yes, then we update the maxLen and move
- *     start to end and continue. If not, then we just continue. In the end,
+ *     start to id+1 and continue. If not, then we just continue. In the end,
  *     we will have the required length in maxLen.
  *     Time complexity is O(n).
  */
@@ -804,7 +804,7 @@ int longestSubstringUnique(char *str, int len) {
             int id = hash[str[end]-'a'];
             if(id >= start) {
                 maxLen = max(maxLen, end-start);
-                start = end;
+                start = id+1;
             }
         }
     }
@@ -826,8 +826,8 @@ int longestSubstringUnique(char *str, int len) {
  *     check floors from 1 to x. If the egg does not break, then we have 2
  *     eggs remaining and we need to check floors from x+1 to k. So say
  *     f(eggs, floors) is the function to get min number of trials to get
- *     the critical floor 'eggs' number of eggs and 'floors' number of floors.
- *     So, f(eggs, floors) = 1 + min(f(eggs-1, x-1), f(eggs, floors-x))
+ *     the critical floor with 'eggs' number of eggs and 'floors' number of
+ *     floors. So, f(eggs, floors) = 1 + min(f(eggs-1, x-1), f(eggs, floors-x))
  *     Here, x is the xth floor we did our trial. Now, x is also unknown and
  *     to get most optimized value of x (the floor from which we should start
  *     our first trial), we should try with all values of x from 1 to floors

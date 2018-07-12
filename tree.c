@@ -237,6 +237,24 @@ void BfsTreeLine(tree_node *root) {
     }
 }
 
+/* Convert a given tree to its mirror image */
+void mirror(tree_node *root) {
+    if(root == NULL) {
+        return;
+    }
+    
+    /* We use post-order here. */
+    mirror(root->left);
+    mirror(root->right);
+
+    /* Now, swap the nodes */
+    tree_node *temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+
+    return root;
+}
+
 int main(void) {
     
 /*

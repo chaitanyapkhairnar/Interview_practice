@@ -1,0 +1,68 @@
+This file contains the approach to be used when we are dealing with very large
+amount of data that is in a file and cannot be read in main memory(RAM) all at
+a same time.
+
+1. Sort a file of very large size. Say 1GB size. Assume RAM is 125MB
+   Here, we have RAM size of 125MB. Say, we can read 100MB of data into main
+   memory and our RAM will be utilized more than 90%. Now we have to sort this
+   amount of data.
+   We use the mergesort technique here. This sorting is called external sort.
+   We first read the 1GB file in the chunks
+   of 100MB at a time and then use mergesort to sort this 100MB of data. We store
+   this chunk in a temp file with name=chunk_number. We do it for all the 10
+   chunks (1GB/100MB = 10 chunks). Now, we have 10 temp files which are sorted.
+   So we have to merge these 10 temp files into a single file in sorted order.
+   We use the technique of using MinHeap here. We take MinHeap of size 10 and
+   load first elements of all these files in it and heapify. Now, untile heap
+   is empty, we get the top element of heap, write it to the original file on
+   first line and then add the next element from the temp file from which the
+   top element in heap belonged to the top of heap and heapify. For this, the
+   heap nodes will have value and pointer to file they belong to. Once the heap
+   is empty, we have the file sorted. We have finite number of chunks of size K
+   and for each chunk, we read the data in O(K) from file and sort it in
+   O(K*log(K)). So total time complexity till here is O(K*log(K))*constant
+   number of chunks so, O(K*log(K)). After this, we need O(KN*log(N)) where
+   K is size of chunks and N are number of chunks to merge the sorted files
+   into one. So total complexity is O(K*log(K)) + O(KN*log(N)).
+
+2. A very large file contains start and end times along with time stamps of
+   cars coming in and out of garage. This function is called multiple times
+   with a time as argument and we need to return the number of cars present
+   in the garage at that particular time.
+   We create an array of size equal to total number of timestamps in the
+   file. Then we read the original file line by line and for each timestamp,
+   at that particular index in our array, we do a +1 if its a start time and
+   -1 if its a end time. Then, we update the array with the running sum. Now
+   we have the number of cars present at a particular time in our array. We
+   just return this value for multiple function calls. This operation will
+   be O(1). The time complexity for creating and updating the array
+   (pre-processing) is O(n) where n is number of timestamps present in the
+   file.
+
+3. Given two very large files with characters and only 1 byte difference, find
+   the missing character.
+   One way of doing this is to read first file char by char and increment sum
+   variable as sum = sum + char. Then read second file and decrement the sum.
+   finally, the value in the sum will be the character missing. But here, as
+   files are large, the sum can overflow. So, we use linkedlist to store the
+   sum where each node of linked list denotes a particular digit. Another way
+   to do is to use xor. we xor each char in file 1 with each other and then we
+   do the same for file 2. Finally, the value remaining in the xor variable is
+   the missing char.
+
+4. Given a very large file with integers in it, we have to shuffle it.
+   We follow the same steps used for sorting a large file. First, we read
+   file in chunks that can fit in our main memory. Then we shuffle each
+   chunk and write it to a seperate temp file. Then we read first number from
+   each chunk and randomly select the chunk number and write that chunk's number
+   to our final file and replace that number with the next number from the chunk
+   We continue doing it till all numbers are written in final file.
+
+***** For all the above problems, if we try to see a pattern, we see that first
+      we divide the file into chunks and process each chunk seperately (map)
+      and then, we combine these multiple chunks into a single file (reduce).
+      This is basic for Map Reduce approach. In this approach, we first map
+      the huge data into chunks and give each chunk to seperate machine to
+      process on it independently and parallely. Then in the reduce step, we
+      combine the result from each machine into a final result.
+*****

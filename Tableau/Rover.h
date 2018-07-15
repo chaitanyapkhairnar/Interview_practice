@@ -1,6 +1,9 @@
 /*
  * Header file with class member definitions
  */
+#ifndef ROVER_H
+#define ROVER_H
+
 #include <string>
 #include <vector>
 #include <utility>
@@ -10,8 +13,8 @@
 
 namespace Rover
 {
-    std::array<int, MOVE_DIRECTIONS> rowMove{0, 1};
-    std::array<int, MOVE_DIRECTIONS> columnMove{1, 0};
+    static std::array<int, MOVE_DIRECTIONS> rowMove{0, 1};
+    static std::array<int, MOVE_DIRECTIONS> columnMove{1, 0};
     
     struct Coordinate
     {
@@ -19,7 +22,7 @@ namespace Rover
         int Y;
     };
 
-    using Grid = std::vector<std::vector<int>>;
+    using Grid = std::vector<std::vector<int>>;      // Same as #define
     using Visited = std::vector<std::vector<bool>>;
 
     /*
@@ -43,3 +46,5 @@ namespace Rover
 
     };
 }//namespace
+
+#endif

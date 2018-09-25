@@ -17,7 +17,7 @@
  *    We use min heap of size K here. We first store the first element of all the
  *    K given arrays into heap. We initialize a result array of size KN. Then until
  *    this result array is filled, we extract min element from the heap and put it
- *    in result array. And we replace this element from the next element in that
+ *    in result array. And we replace this element with the next element in that
  *    array in the heap. If that array is out of elements, we replace it with
  *    some max value. This is O(KN*log(K)) approach as for each insertion to heap
  *    we take log(K) time and there are total KN elements.
@@ -155,7 +155,7 @@ void getMedian(int num, int *minHeap, int *maxHeap, int *median) {
  *    increment the count by 1. While doing so, after we update the count
  *    of the word, we check if our min heap of size K has empty space. If
  *    yes, we add the word to heap along with its count. Here heap node
- *    has a string and an int members. We add the word to the end and index
+ *    has a string and an int members. We add the word to the end index
  *    of heap and call heapify. If heap has no empty space, then we get the
  *    count of the top element of the heap. If the count of our word from trie
  *    is greater than the count of heap top element, we replace heap's top

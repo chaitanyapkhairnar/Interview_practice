@@ -816,12 +816,110 @@ This file contains the design patterns in C++ and their implementation.
 
 7. Adapter Pattern: This pattern is used in the situations where there are two
    classes with different interfaces and they need to communicate to each other
-   Here, we define another adapter class. Say we have classes A and B where A
-   has method run() and B has method execute(). Now, to make them uniform, we
-   define class Adapter_a which inherits from class A. So this will have method
-   run. Now, in this class, we get the instance/object of class B. Now, we
-   override the function run() such that, inside run(), it calls B.execute().
-   Now, from main class, if we make objects of A and call run, and make
-   objects of Adapter_a and call run, then for first case, run will be called
-   and for second case, execute will be called. Thus we have designed a class
-   to make the interfaces of both the classes uniform.
+   We use this in the case when we are using some external library APIs in our
+   code. Imagine we are using external library Paypal for making payments.
+   The Paypal class visible to us is as below
+
+   class Paypal {
+       public:
+           bool makePayment(int amount);
+   }
+
+   Now, to use this API for our payments, we create Paypal object in our code
+   and call the makePayment method as below
+
+   class MyCode {
+       public:
+           void CustomerPays(int amount) {
+               Paypal pp = new Paypal();
+               bool ret = false;
+               ret = pp.makePayment(amount);
+               if(!ret) {
+                   // Error
+               }
+           }
+   }
+
+   Now, say we have a huge codebase and we have similar code as above in
+   different places. In one of the updates from Paypal, they have changed the
+   public API from makePayment() to pay(). For us, this will trigger a huge
+   code change at different places as we need to change all the calls to
+   makePayment to pay(). This is a bad design. So, in this case, we use
+   Adapter design. We use this in case where we are dependent on a class
+   which can change its behaviour. What we do here is create a adapter
+   abstract class for Paypal as Paypal class is prone to changes. The abstract
+   adapter class which acts as an interface is as below:
+
+   class PaymentAdapter {
+       public:
+          bool makePayment(int amount);
+   }
+
+   Now, we define a concrete class which implements this adapter class.
+
+   class PaypalAdapter : public PaymentAdapter {
+       Paypal pp;
+       public:
+           PaypalAdapter() {
+               pp = new Paypal();
+           }
+           bool makePayment(int amount) {
+               bool ret = pp.makePayment(amount);
+               return ret;
+           }
+   }
+
+   What we did here is created a wrapper class PaypalAdapter which has a public
+   interface makePayment(). This class will create Paypal object and call Paypal
+   object's API to make the payment. Now, our code will look something like this
+
+   class MyCode {
+       public:
+           void CustomerPays(int amount) {
+               PaypalAdapter pp = new PaypalAdapter();
+               bool ret = false;
+               ret = pp.makePayment(amount);
+               if(!ret) {
+                   // Error
+               }
+           }
+   }
+
+   Instead of creating object of Paypal class, we create object of PaypalAdapter
+   class. Now, say Paypal changes its API to pay(), so the only change we need
+   to do is in PaypalAdapter class where we change pp.makePayment() to
+   pp.pay() and this will be take care at all other places. This is the use of
+   adapter class. Now, say we have one more API to make payments called
+   moneyGram. This moneyGram class exposes API transfer() for payments. Now
+   we can add another adapter class moneyGramAdapter which also inherits from
+   adapter class and call moneyGram.transfer() inside its makePayment() method.
+   Or another method is, we have a universal adapter class say PayAdapter
+   which will take a string in the constructor and based on the string, will
+   create an object wither for paypal or for moneygram. And in the makePayment()
+   method, it will call the correct object's API.
+   
+   class PayAdapter : public PaymentAdapter {
+       Paypal pp;
+       moneyGram mg;
+       String paymentType;
+       int amount;
+       public:
+           PayAdapter(String paymentType) {
+               this.paymentType = paymentType;
+           }
+           bool makePayment(int amount) {
+               if(paymentType == "paypal") {
+                   Paypal pp = new Paypal();
+                   bool ret = pp.makePayment(amount);
+                   return ret;
+               } else if (paymentType == "moneygram") {
+                   moneygram mg = new moneygram();
+                   bool ret = mg.transfer();
+                   return ret;
+               } else {
+                   /* Some default payment method or error here */
+               }
+           }
+   }
+
+   Now this single class will handle all the payments based on the string passed

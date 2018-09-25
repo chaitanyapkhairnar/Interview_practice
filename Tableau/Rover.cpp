@@ -48,7 +48,7 @@ namespace Rover
             
             std::cout << "Path found as below:\n";
             for(int id = 0; id <= result_idx; id++) {
-                std::cout << result[id].X << "," << result[id].Y;
+                std::cout << result[id].X << "," << result[id].Y << std::endl;
                 if(id != result_idx) {
                     std::cout << ",";
                 }

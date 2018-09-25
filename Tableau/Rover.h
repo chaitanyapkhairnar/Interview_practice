@@ -9,12 +9,12 @@
 #include <utility>
 #include <array>
 
-#define MOVE_DIRECTIONS 2
+#define MOVE_DIRECTIONS 4
 
 namespace Rover
 {
-    static std::array<int, MOVE_DIRECTIONS> rowMove{0, 1};
-    static std::array<int, MOVE_DIRECTIONS> columnMove{1, 0};
+    static std::array<int, MOVE_DIRECTIONS> rowMove{0, 0, 1, -1};
+    static std::array<int, MOVE_DIRECTIONS> columnMove{1, -1, 0, 0};
     
     struct Coordinate
     {
